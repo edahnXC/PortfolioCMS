@@ -47,5 +47,6 @@ node_modules/
 bin/
 obj/
 .vs/
+backend/**/.vs/
 .env
 dist/
