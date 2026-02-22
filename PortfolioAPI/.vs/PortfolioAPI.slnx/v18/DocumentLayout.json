@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\PortfolioProject\\PortfolioAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AC1C2B95-5897-4835-B723-5A32A3D525A5}|PortfolioAPI.csproj|f:\\portfolioproject\\portfolioapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{AC1C2B95-5897-4835-B723-5A32A3D525A5}|PortfolioAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC1C2B95-5897-4835-B723-5A32A3D525A5}|PortfolioAPI.csproj|f:\\portfolioproject\\portfolioapi\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC1C2B95-5897-4835-B723-5A32A3D525A5}|PortfolioAPI.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC1C2B95-5897-4835-B723-5A32A3D525A5}|PortfolioAPI.csproj|f:\\portfolioproject\\portfolioapi\\models\\photo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC1C2B95-5897-4835-B723-5A32A3D525A5}|PortfolioAPI.csproj|solutionrelative:models\\photo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC1C2B95-5897-4835-B723-5A32A3D525A5}|PortfolioAPI.csproj|f:\\portfolioproject\\portfolioapi\\models\\poem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC1C2B95-5897-4835-B723-5A32A3D525A5}|PortfolioAPI.csproj|solutionrelative:models\\poem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\PortfolioProject\\PortfolioAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "F:\\PortfolioProject\\PortfolioAPI\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-22T09:07:23.68Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "F:\\PortfolioProject\\PortfolioAPI\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
+              "ToolTip": "F:\\PortfolioProject\\PortfolioAPI\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-22T09:02:30.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Photo.cs",
+              "DocumentMoniker": "F:\\PortfolioProject\\PortfolioAPI\\Models\\Photo.cs",
+              "RelativeDocumentMoniker": "Models\\Photo.cs",
+              "ToolTip": "F:\\PortfolioProject\\PortfolioAPI\\Models\\Photo.cs",
+              "RelativeToolTip": "Models\\Photo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-22T08:57:03.757Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Poem.cs",
+              "DocumentMoniker": "F:\\PortfolioProject\\PortfolioAPI\\Models\\Poem.cs",
+              "RelativeDocumentMoniker": "Models\\Poem.cs",
+              "ToolTip": "F:\\PortfolioProject\\PortfolioAPI\\Models\\Poem.cs",
+              "RelativeToolTip": "Models\\Poem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-22T08:54:18.22Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
