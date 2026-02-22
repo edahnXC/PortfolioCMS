@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PortfolioAPI.Data;
 using PortfolioAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,14 +17,15 @@ namespace PortfolioAPI.Controllers
             _context = context;
         }
 
-        // GET: api/photos
+        // 🟢 PUBLIC - Anyone can view photos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
         {
             return await _context.Photos.ToListAsync();
         }
 
-        // POST: api/photos
+        // 🔴 ADMIN ONLY - Upload Photo
+        [Authorize]
         [HttpPost("upload")]
         public async Task<IActionResult> UploadPhoto(IFormFile file, [FromForm] string title)
         {
@@ -56,7 +58,8 @@ namespace PortfolioAPI.Controllers
             return Ok(photo);
         }
 
-        // DELETE: api/photos/5
+        // 🔴 ADMIN ONLY - Delete Photo
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoto(int id)
         {
