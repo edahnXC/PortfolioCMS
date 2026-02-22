@@ -21,32 +21,6 @@
   },
   {
     "ContainingType": "PortfolioAPI.Controllers.PhotosController",
-    "Method": "UploadPhoto",
-    "RelativePath": "api/Photos",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "photo",
-        "Type": "PortfolioAPI.Models.Photo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "PortfolioAPI.Models.Photo",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "PortfolioAPI.Controllers.PhotosController",
     "Method": "DeletePhoto",
     "RelativePath": "api/Photos/{id}",
     "HttpMethod": "DELETE",
@@ -57,6 +31,27 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PortfolioAPI.Controllers.PhotosController",
+    "Method": "UploadPhoto",
+    "RelativePath": "api/Photos/upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "title",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

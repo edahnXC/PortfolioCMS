@@ -24,13 +24,36 @@ namespace PortfolioAPI.Controllers
         }
 
         // POST: api/photos
-        [HttpPost]
-        public async Task<ActionResult<Photo>> UploadPhoto(Photo photo)
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadPhoto(IFormFile file, [FromForm] string title)
         {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded.");
+
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(folderPath, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var photo = new Photo
+            {
+                Title = title,
+                ImagePath = "Uploads/" + fileName,
+                UploadedDate = DateTime.Now
+            };
+
             _context.Photos.Add(photo);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPhotos), new { id = photo.Id }, photo);
+            return Ok(photo);
         }
 
         // DELETE: api/photos/5

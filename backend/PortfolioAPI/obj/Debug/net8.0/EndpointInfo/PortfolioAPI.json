@@ -41,50 +41,42 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Photos/upload": {
       "post": {
         "tags": [
           "Photos"
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Photo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Photo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Photo"
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                },
+                "title": {
+                  "style": "form"
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Photo"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Photo"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Photo"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }

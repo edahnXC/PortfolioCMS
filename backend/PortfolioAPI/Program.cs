@@ -1,3 +1,4 @@
+using Microsoft.Extensions.FileProviders;
 using PortfolioAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+    RequestPath = "/Uploads"
+    });
 
 app.MapControllers();
 
