@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "PortfolioAPI.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "admin",
+        "Type": "PortfolioAPI.Models.Admin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PortfolioAPI.Controllers.PhotosController",
     "Method": "GetPhotos",
     "RelativePath": "api/Photos",
