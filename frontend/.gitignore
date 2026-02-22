@@ -43,10 +43,10 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
-node_modules/
+.vs/
+**/.vs/
 bin/
 obj/
-.vs/
-backend/**/.vs/
-.env
+node_modules/
 dist/
+.env
