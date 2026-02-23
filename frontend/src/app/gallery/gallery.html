@@ -1,0 +1,14 @@
+<h2>Gallery</h2>
+
+<div class="gallery-container">
+  <div class="gallery-item" *ngFor="let photo of photos">
+
+    <img [src]="'https://localhost:7076/' + photo.imagePath" />
+
+    <div class="overlay">
+      <p>{{photo.title}}</p>
+      <button *ngIf="isAdmin" (click)="deletePhoto(photo.id)">Delete</button>
+    </div>
+
+  </div>
+</div>
