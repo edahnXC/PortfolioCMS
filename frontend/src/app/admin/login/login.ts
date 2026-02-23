@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,15 +15,16 @@ export class Login {
   username = '';
   password = '';
 
-  constructor(private http: HttpClient) {}
-
+  constructor(private http: HttpClient,
+            private router: Router) {}
   login() {
     this.http.post<any>('https://localhost:7076/api/Auth/login', {
       username: this.username,
       password: this.password
     }).subscribe(res => {
-      localStorage.setItem('token', res.token);
-      alert('Login Successful');
-    });
+  localStorage.setItem('token', res.token);
+  alert('Login Successful');
+  this.router.navigate(['/admin/dashboard']);
+});
   }
 }
