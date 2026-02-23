@@ -1,0 +1,21 @@
+<h2>Upload Photo</h2>
+
+<form (ngSubmit)="uploadPhoto()">
+
+  <input type="text"
+         [(ngModel)]="title"
+         name="title"
+         placeholder="Photo Title"
+         required />
+
+  <br /><br />
+
+  <input type="file"
+         (change)="onFileChange($event)"
+         required />
+
+  <br /><br />
+
+  <button type="submit">Upload Photo</button>
+
+</form>
