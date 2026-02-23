@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import {OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
-export class Login {
+export class Login implements OnInit{
 
   username = '';
   password = '';
@@ -27,4 +28,10 @@ export class Login {
   this.router.navigate(['/admin/dashboard']);
 });
   }
+  ngOnInit() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    this.router.navigate(['/admin/dashboard']);
+  }
+}
 }
