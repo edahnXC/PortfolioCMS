@@ -1,0 +1,23 @@
+<h2>Latest Poems</h2>
+
+<div *ngFor="let poem of poems">
+  <h3>{{poem.title}}</h3>
+  <p>{{poem.content}}</p>
+  <hr>
+</div>
+
+<button routerLink="/poems">View More Poems</button>
+
+<hr>
+
+<h2>Latest Photos</h2>
+
+<div *ngFor="let photo of photos">
+  <img [src]="'https://localhost:7076/' + photo.imagePath"
+       width="200"
+       height="150">
+</div>
+
+<br>
+
+<button routerLink="/gallery">View More Photos</button>

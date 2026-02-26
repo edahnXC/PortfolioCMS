@@ -22,7 +22,7 @@ export class AddPoem {
 
   addPoem() {
     this.poemService.createPoem(this.poem)
-      .subscribe(res => {
+      .subscribe((_res: any) => {
         alert('Poem Added Successfully');
       });
   }
