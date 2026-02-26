@@ -1,1 +1,7 @@
-<p>poems works!</p>
+<h2>All Poems</h2>
+<div *ngFor="let poem of poems">
+    <h3>{{poem.title}}</h3>
+    <p>{{poem.content}}</p>
+    <small>{{poem.createdDate|date:'medium'}}</small>
+    <hr>
+</div>

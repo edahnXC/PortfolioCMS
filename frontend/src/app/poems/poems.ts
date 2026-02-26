@@ -1,11 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PoemService } from '../services/poem';
 
 @Component({
   selector: 'app-poems',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './poems.html',
-  styleUrl: './poems.scss',
+  styleUrls: ['./poems.scss']
 })
-export class Poems {
+export class Poems implements OnInit {
 
+  poems: any[] = [];
+
+  constructor(private poemService: PoemService) {}
+
+  ngOnInit() {
+    this.poemService.getAllPoems()
+      .subscribe(data => {
+        this.poems = data;
+      });
+  }
 }

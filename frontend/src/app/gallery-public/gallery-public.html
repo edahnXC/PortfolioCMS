@@ -1,1 +1,12 @@
-<p>gallery-public works!</p>
+<h2>Gallery</h2>
+
+<div class="gallery-container">
+  <div class="gallery-item" *ngFor="let photo of photos">
+    <img 
+      [src]="'https://localhost:7076/' + photo.imagePath"
+      width="250"
+      height="180"
+    />
+    <p>{{photo.title}}</p>
+  </div>
+</div>
