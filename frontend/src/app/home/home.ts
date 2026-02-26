@@ -7,7 +7,7 @@ import { PhotoService } from '../services/photo';
   standalone:true,
   imports: [CommonModule],
   templateUrl: './home.html',
-  styleUrl: './home.scss',
+  styleUrls: ['./home.scss'],
 })
 export class Home implements OnInit {
 poems:any[]=[];
