@@ -9,4 +9,18 @@ import {CommonModule} from '@angular/common';
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class App {}
+export class App {
+
+  darkMode = false;
+
+  toggleTheme() {
+    this.darkMode = !this.darkMode;
+
+    if (this.darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }
+
+}

@@ -1,60 +1,49 @@
 .hero {
-  height: 80vh;
-  background: linear-gradient(to right, #111, #222);
-  color: white;
+  height: 90vh;
+  background: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 80px;
+  padding-left: 100px;
 }
 
 .hero h1 {
-  font-size: 60px;
+  font-size: 64px;
   margin: 0;
+}
+
+.hero span {
+  color: var(--accent);
 }
 
 .hero p {
   margin-top: 20px;
   font-size: 18px;
-  color: #bbb;
+  color: #94a3b8;
 }
 
-.preview-section {
-  padding: 60px 80px;
-}
-
-.preview-section h2 {
-  margin-bottom: 30px;
-}
-
-.poem-card {
-  background: #f4f4f4;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-}
-
-.gallery-preview {
-  display: flex;
-  gap: 20px;
-}
-
-.gallery-item img {
-  width: 250px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #111;
+.hero button {
+  width:fit-content;
+  background: var(--accent);
   color: white;
+  padding: 14px 40px;
   border: none;
-  cursor: pointer;
+  border-radius:40px;
 }
 
-button:hover {
-  background-color: #333;
+.hero button:hover {
+  background-color: #1d4ed8;
+}
+@media (max-width: 768px) {
+
+  .hero {
+    padding: 40px;
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
 }

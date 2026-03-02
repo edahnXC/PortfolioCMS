@@ -1,0 +1,45 @@
+.about-hero {
+  padding: 80px;
+  background: #111;
+  color: white;
+}
+
+.about-hero h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.about-hero p {
+  color: #bbb;
+}
+
+.about-content,
+.skills-section,
+.projects-section {
+  padding: 60px 80px;
+}
+
+.about-content p {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.skills-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.skill-card {
+  background: #f4f4f4;
+  padding: 20px 30px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.project-card {
+  background: #f4f4f4;
+  padding: 25px;
+  border-radius: 6px;
+  max-width: 600px;
+}

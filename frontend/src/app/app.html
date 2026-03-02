@@ -1,12 +1,15 @@
 <nav class="navbar">
-  <div class="logo">Om Portfolio</div>
-
+  <div class="logo">Om <span>Portfolio</span> </div>
   <div class="nav-links">
     <a routerLink="/">Home</a>
     <a routerLink="/poems">Poems</a>
     <a routerLink="/gallery">Gallery</a>
     <a routerLink="/about">About</a>
   </div>
+  <button class="theme-toggle" (click)="toggleTheme()">
+  <span *ngIf="!darkMode">🌙</span>
+  <span *ngIf="darkMode">☀️</span>
+</button>
 </nav>
 
 <router-outlet></router-outlet>

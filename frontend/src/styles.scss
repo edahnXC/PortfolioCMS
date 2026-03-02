@@ -1,1 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --accent: #2563eb;
+}
+
+/* LIGHT THEME (default) */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #ffffff;
+  color: #1e293b;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* DARK THEME */
+body.dark-mode {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+/* Navbar */
+.navbar {
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .navbar {
+  background: #0f172a;
+  color: white;
+}
+
+/* Links */
+.nav-links a {
+  color: inherit;
+}
+
+body.dark-mode .nav-links a {
+  color: #e2e8f0;
+}
+
+/* Hero */
+.hero {
+  transition: background 0.3s ease;
+}
+
+body.dark-mode .hero {
+  background: #0f172a;
+  color: white;
+}
