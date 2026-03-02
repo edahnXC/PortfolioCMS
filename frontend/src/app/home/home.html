@@ -1,23 +1,28 @@
-<h2>Latest Poems</h2>
+<!-- Hero section -->
+ <section class="hero">
+<h1>I Write Poems</h1>
+<h1>I Build Systems</h1>
+<p>Welcome to ,y digital space where creativity meets code.</p>
+</section>
 
-<div *ngFor="let poem of poems">
-  <h3>{{poem.title}}</h3>
-  <p>{{poem.content}}</p>
-  <hr>
-</div>
+<!--Poems Preview-->
+<section class="preview-section">
+  <h2>Latest Poems</h2>
 
-<button routerLink="/poems">View More Poems</button>
+  <div class="poem-card" *ngFor="let poem of poems">
+    <h3>{{ poem.title }}</h3>
+    <p>{{ poem.content}}</p>
+    </div>
 
-<hr>
+    <button routerLink="/poems">View More Poems</button>
+    </section>
 
+<!--Gallery Preview-->
+<section class="preview-section">
 <h2>Latest Photos</h2>
-
-<div *ngFor="let photo of photos">
-  <img [src]="'https://localhost:7076/' + photo.imagePath"
-       width="200"
-       height="150">
+<div class="gallery-preview">
+  <div class="gallery-item" *ngFor="let photo of photos">
+    <img [src]="'https://localhost:7076/'+ photo.imagePath"/>
+  </div>
 </div>
-
-<br>
-
-<button routerLink="/gallery">View More Photos</button>
+</section>
