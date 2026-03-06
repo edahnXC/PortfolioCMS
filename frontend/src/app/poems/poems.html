@@ -1,7 +1,20 @@
-<h2>All Poems</h2>
-<div *ngFor="let poem of poems">
-    <h3>{{poem.title}}</h3>
-    <p>{{poem.content}}</p>
-    <small>{{poem.createdDate|date:'medium'}}</small>
-    <hr>
-</div>
+<section class="poems-wrapper">
+
+  <div class="poems-header">
+    <h1>Poems</h1>
+    <p>Words shaped through moments and meaning.</p>
+  </div>
+
+  <div class="poems-grid">
+    <div class="poem-card" *ngFor="let poem of poems">
+
+      <h2>{{ poem.title }}</h2>
+      <p class="poem-content">{{ poem.content }}</p>
+      <span class="poem-date">
+        {{ poem.createdDate | date:'mediumDate' }}
+      </span>
+
+    </div>
+  </div>
+
+</section>

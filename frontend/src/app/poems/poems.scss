@@ -1,0 +1,64 @@
+.poems-wrapper {
+  padding: 100px 80px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.poems-header h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.poems-header p {
+  color: #64748b;
+  margin-bottom: 60px;
+}
+
+.poems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 40px;
+}
+
+.poem-card {
+  background: #f1f5f9;
+  padding: 30px;
+  border-radius: 16px;
+  transition: 0.3s ease;
+}
+
+.poem-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+}
+
+.poem-card h2 {
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.poem-content {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.poem-date {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Dark Mode */
+body.dark-mode .poem-card {
+  background: #1e293b;
+}
+
+body.dark-mode .poem-date {
+  color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .poems-wrapper {
+    padding: 60px 30px;
+  }
+}

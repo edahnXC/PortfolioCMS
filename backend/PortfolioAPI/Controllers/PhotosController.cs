@@ -16,12 +16,19 @@ namespace PortfolioAPI.Controllers
         {
             _context = context;
         }
-
-        // 🟢 PUBLIC - Anyone can view photos
+        /// 🟢 PUBLIC - Paginated Photos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
+        public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos(
+            int page = 1,
+            int pageSize = 8)
         {
-            return await _context.Photos.ToListAsync();
+            var photos = await _context.Photos
+                .OrderByDescending(p => p.UploadedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return photos;
         }
 
         // 🔴 ADMIN ONLY - Upload Photo

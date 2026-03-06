@@ -17,11 +17,19 @@ namespace PortfolioAPI.Controllers
             _context = context;
         }
 
-        // 🟢 PUBLIC - Anyone can view all poems
+        // 🟢 PUBLIC - Paginated Poems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Poem>>> GetPoems()
+        public async Task<ActionResult<IEnumerable<Poem>>> GetPoems(
+            int page = 1,
+            int pageSize = 6)
         {
-            return await _context.Poems.ToListAsync();
+            var poems = await _context.Poems
+                .OrderByDescending(p => p.CreatedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return poems;
         }
 
         // 🟢 PUBLIC - Anyone can view specific poem
