@@ -1,12 +1,27 @@
-<h2>Gallery</h2>
+<section class="gallery-wrapper">
 
-<div class="gallery-container">
-  <div class="gallery-item" *ngFor="let photo of photos">
-    <img 
-      [src]="'https://localhost:7076/' + photo.imagePath"
-      width="250"
-      height="180"
-    />
-    <p>{{photo.title}}</p>
+  <div class="gallery-header">
+    <h1>Gallery</h1>
+    <p>Moments captured through lens and perspective.</p>
   </div>
+
+  <div class="gallery-grid">
+
+    <div class="gallery-card" *ngFor="let photo of photos">
+
+      <img [src]="'https://localhost:7076/' + photo.imagePath" />
+
+      <div class="photo-title">
+        {{photo.title}}
+      </div>
+
+    </div>
+
+  </div>
+
+ <div class="pagination">
+  <button (click)="prevPage()" *ngIf="currentPage > 1">Previous</button>
+  <button (click)="nextPage()">Next</button>
 </div>
+
+</section>

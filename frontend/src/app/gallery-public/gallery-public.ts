@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PhotoService } from '../services/photo';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-gallery-public',
@@ -14,17 +13,37 @@ export class GalleryPublic implements OnInit {
 
   photos: any[] = [];
 
-  constructor(
-    private photoService: PhotoService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  currentPage = 1;
+  pageSize = 6;
+
+  constructor(private photoService: PhotoService) {}
 
   ngOnInit() {
-    this.photoService.getAllPhotos()
-      .subscribe(data => {
-        console.log("PHOTOS:", data);
+    this.loadPhotos();
+  }
+
+  loadPhotos() {
+    this.photoService.getPhotos(this.currentPage, this.pageSize)
+      .subscribe((data:any[]) => {
+
+        if(data.length===0){
+          this.currentPage--;
+          return;
+        }
         this.photos = data;
-        this.cdr.detectChanges();   // 🔥 FORCE UI UPDATE
       });
   }
+
+  nextPage() {
+    this.currentPage++;
+    this.loadPhotos();
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadPhotos();
+    }
+  }
+
 }

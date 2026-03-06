@@ -1,33 +1,37 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { PhotoService } from '../../services/photo';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-upload-photo',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './upload-photo.html',
   styleUrls: ['./upload-photo.scss']
 })
 export class UploadPhoto {
 
   selectedFile!: File;
-  title = '';
+  title: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private photoService: PhotoService) {}
 
-  onFileChange(event: any) {
+  onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
   uploadPhoto() {
+
     const formData = new FormData();
+
     formData.append('file', this.selectedFile);
     formData.append('title', this.title);
 
-    this.http.post('https://localhost:7076/api/Photos/upload', formData)
-      .subscribe(res => {
-        alert('Photo Uploaded Successfully');
+    this.photoService.uploadPhoto(formData)
+      .subscribe(() => {
+        alert("Photo Uploaded Successfully");
       });
   }
+
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PoemService } from '../services/poem';
-import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-poems',
@@ -14,17 +14,37 @@ export class Poems implements OnInit {
 
   poems: any[] = [];
 
-  constructor(
-    private poemService: PoemService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  currentPage = 1;
+  pageSize = 6;
+
+  constructor(private poemService: PoemService) {}
 
   ngOnInit() {
-    this.poemService.getAllPoems()
-      .subscribe(data => {
-        console.log("POEMS:", data);
+    this.loadPoems();
+  }
+
+  loadPoems() {
+    this.poemService.getPoems(this.currentPage, this.pageSize)
+      .subscribe((data: any[]) => {
+
+        if(data.length===0){
+          this.currentPage--;
+          return;
+        }
         this.poems = data;
-        this.cdr.detectChanges();   // FORCE UI UPDATE
       });
   }
+
+  nextPage() {
+    this.currentPage++;
+    this.loadPoems();
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadPoems();
+    }
+  }
+
 }

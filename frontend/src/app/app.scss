@@ -1,42 +1,105 @@
+/* ============================= */
+/* NAVBAR BASE STYLES */
+/* ============================= */
+
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 25px 80px;
-  background: white;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  justify-content: space-between;
+  padding: 20px 60px;
+  
+  /* Glassmorphism effect */
+  backdrop-filter: blur(10px);
+  
+  border-bottom: 1px solid var(--card-border);
+  z-index: 1000;
+  pointer-events: auto; 
+  transition: background 0.3s ease;
 }
 
 .logo {
   font-size: 22px;
   font-weight: 600;
-  color: var(--dark);
+  color: var(--text-primary);
 }
 
 .logo span {
   color: var(--accent);
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 25px;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
 .nav-links a {
-  margin-left: 30px;
   text-decoration: none;
   font-weight: 500;
-  color: var(--dark);
-  position: relative;
+  color: var(--text-primary);
+  transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
   color: var(--accent);
 }
+
 .theme-toggle {
   border: none;
-  background: #e2e8f0;
-  padding: 8px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 6px 12px;
   border-radius: 20px;
   cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 34px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
 }
+
+/* ============================= */
+/* DARK MODE OVERRIDES */
+/* ============================= */
+
+body.dark-mode .navbar {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: var(--card-border);
+}
+
+/* Make navbar text visible in dark mode */
+
+body.dark-mode .logo {
+  color: #ffffff;
+}
+
+body.dark-mode .nav-links a {
+  color: #e2e8f0;
+}
+
+body.dark-mode .nav-links a:hover {
+  color: var(--accent);
+}
+
+/* Toggle button */
 
 body.dark-mode .theme-toggle {
   background: #1e293b;
-  color: white;
+  border-color: #334155;
+  color: #ffffff;
 }

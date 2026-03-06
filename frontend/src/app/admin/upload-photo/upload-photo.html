@@ -1,21 +1,17 @@
-<h2>Upload Photo</h2>
+<section class="admin-upload">
 
-<form (ngSubmit)="uploadPhoto()">
+<h1>Upload Photo</h1>
 
-  <input type="text"
-         [(ngModel)]="title"
-         name="title"
-         placeholder="Photo Title"
-         required />
+<input type="file" (change)="onFileSelected($event)" />
 
-  <br /><br />
+<input
+type="text"
+placeholder="Photo title"
+[(ngModel)]="title"
+/>
 
-  <input type="file"
-         (change)="onFileChange($event)"
-         required />
+<button (click)="uploadPhoto()">
+Upload Photo
+</button>
 
-  <br /><br />
-
-  <button type="submit">Upload Photo</button>
-
-</form>
+</section>

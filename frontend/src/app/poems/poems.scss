@@ -1,4 +1,5 @@
 .poems-wrapper {
+  background:var(--bg-primary);
   padding: 100px 80px;
   max-width: 1200px;
   margin: auto;
@@ -10,7 +11,7 @@
 }
 
 .poems-header p {
-  color: #64748b;
+  color: var(--text-secondary);
   margin-bottom: 60px;
 }
 
@@ -21,42 +22,60 @@
 }
 
 .poem-card {
-  background: #f1f5f9;
+  background: var(--card-bg);
+  color: var(--text-primary);
   padding: 30px;
   border-radius: 16px;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .poem-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
 .poem-card h2 {
   margin-bottom: 15px;
+  background: var(--card-bg);
+  color:var(--text-primary);
   font-size: 22px;
 }
 
 .poem-content {
   margin-bottom: 20px;
   line-height: 1.6;
+  color: var(--text-primary);
 }
 
 .poem-date {
   font-size: 14px;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
-/* Dark Mode */
-body.dark-mode .poem-card {
-  background: #1e293b;
+/* Pagination */
+
+.pagination {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
-body.dark-mode .poem-date {
-  color: #94a3b8;
+.pagination button {
+  padding: 10px 25px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  opacity: 0.9;
 }
 
 /* Responsive */
+
 @media (max-width: 768px) {
   .poems-wrapper {
     padding: 60px 30px;

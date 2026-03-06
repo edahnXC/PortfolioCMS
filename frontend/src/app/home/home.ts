@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { PoemService } from "../services/poem";
 import { PhotoService } from '../services/photo';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -13,28 +12,37 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class Home implements OnInit {
 
-  poems: any[] = [];
-  photos: any[] = [];
+  poems:any[]=[]
+  photos:any[]=[]
+  heroImages:string[]=[]
 
   constructor(
-    private poemService: PoemService,
-    private photoService: PhotoService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private poemService:PoemService,
+    private photoService:PhotoService
+  ){}
 
-  ngOnInit() {
+  ngOnInit(){
 
-    this.poemService.getAllPoems()
-      .subscribe(data => {
-        this.poems = data.slice(0,2);
-        this.cdr.detectChanges();
-      });
+    // Latest poems
+    this.poemService.getPoems(1,2)
+    .subscribe((data:any[])=>{
+      this.poems=data
+    })
 
-    this.photoService.getAllPhotos()
-      .subscribe(data => {
-        this.photos = data.slice(0,3);
-        this.cdr.detectChanges();
-      });
+    // Fetch photos
+    this.photoService.getPhotos(1,20)
+    .subscribe((data:any[])=>{
+
+      this.photos=data
+
+      const shuffled = data.sort(() => 0.5 - Math.random())
+
+      this.heroImages = shuffled
+      .slice(0,5)
+      .map(p => 'https://localhost:7076/' + p.imagePath)
+
+    })
 
   }
+
 }

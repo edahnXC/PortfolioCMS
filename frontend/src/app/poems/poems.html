@@ -15,6 +15,10 @@
       </span>
 
     </div>
-  </div>
+    </div>  
+    <div class="pagination">
+  <button (click)="prevPage()"*ngif="currentPage > 1">Previous</button>
+  <button (click)="nextPage()">Next</button>
+</div>
 
 </section>

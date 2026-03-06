@@ -11,14 +11,26 @@ export class PoemService {
 
   constructor(private http: HttpClient) {}
 
-  getAllPoems(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  // 🔵 Paginated poems (used in Poems page)
+  getPoems(page: number, pageSize: number): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}?page=${page}&pageSize=${pageSize}`
+    );
   }
 
+  // 🔵 Latest poems (used in Home page)
+  getLatestPoems(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}?page=1&pageSize=2`
+    );
+  }
+
+  // 🔴 Admin - create poem
   createPoem(poem: any): Observable<any> {
     return this.http.post(this.apiUrl, poem);
   }
 
+  // 🔴 Admin - delete poem
   deletePoem(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

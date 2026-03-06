@@ -1,49 +1,257 @@
-.hero {
-  height: 90vh;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 100px;
+/* ============================= */
+/* GLOBAL THEME VARIABLES */
+/* ============================= */
+
+:root{
+
+--accent:#3b82f6;
+
+/* backgrounds */
+--bg-primary:#f8fafc;
+--bg-secondary:#ffffff;
+
+/* text */
+--text-primary:#0f172a;
+--text-secondary:#64748b;
+
+/* cards */
+--card-bg:#ffffff;
+--card-border:#e2e8f0;
+
+/* hero gradient */
+--hero-gradient: linear-gradient(
+135deg,
+#0f172a 0%,
+#1e293b 50%,
+#0f172a 100%
+);
+
 }
 
-.hero h1 {
-  font-size: 64px;
-  margin: 0;
+/* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+body.dark-mode{
+
+--bg-primary:#020617;
+--bg-secondary:#0f172a;
+
+--text-primary:#e2e8f0;
+--text-secondary:#94a3b8;
+
+--card-bg:#1e293b;
+--card-border:#334155;
+
+--accent:#60a5fa;
+
 }
 
-.hero span {
-  color: var(--accent);
+/* ============================= */
+/* GLOBAL BODY */
+/* ============================= */
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+
+background:var(--bg-primary);
+color:var(--text-primary);
+
+transition:background 0.3s ease,color 0.3s ease;
 }
 
-.hero p {
-  margin-top: 20px;
-  font-size: 18px;
-  color: #94a3b8;
+/* ============================= */
+/* GLOBAL SECTION LAYOUT */
+/* ============================= */
+
+.preview-section{
+
+padding:100px 80px;
+max-width:1200px;
+margin:auto;
+
 }
 
-.hero button {
-  width:fit-content;
-  background: var(--accent);
-  color: white;
-  padding: 14px 40px;
-  border: none;
-  border-radius:40px;
+.preview-section h2{
+
+font-size:34px;
+margin-bottom:40px;
+
+}
+.home-gallery{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:20px;
+
+max-width:900px;
+
+margin:auto;
+
 }
 
-.hero button:hover {
-  background-color: #1d4ed8;
+.home-gallery-card{
+
+border-radius:10px;
+
+overflow:hidden;
+
+border:1px solid var(--card-border);
+
 }
-@media (max-width: 768px) {
 
-  .hero {
-    padding: 40px;
-    text-align: center;
-    align-items: center;
-  }
+.home-gallery-card img{
 
-  .hero h1 {
-    font-size: 38px;
-  }
+width:100%;
+
+height:140px;
+
+object-fit:cover;
+
+}
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+
+button{
+
+background:var(--accent);
+color:white;
+
+border:none;
+border-radius:25px;
+
+padding:12px 28px;
+
+font-size:15px;
+
+cursor:pointer;
+
+transition:0.25s;
+
+}
+
+button:hover{
+
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+
+}
+.hero-intro h1{
+font-size:48px;
+font-weight:600;
+}
+
+.hero-intro span{
+color:var(--accent);
+}
+
+.hero-intro p{
+    margin-top:18px;
+    color:var(--text-secondary);
+    font-size:18px;
+}
+
+/* IMAGE GRID */
+
+.hero-gallery{
+
+max-width:1200px;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:20px;
+
+padding:0 60px;
+
+}
+
+.hero-image{
+
+overflow:hidden;
+
+border-radius:10px;
+
+}
+
+.hero-image img{
+
+width:100%;
+
+height:260px;
+
+object-fit:cover;
+
+transition:0.4s ease;
+
+}
+
+.hero-image img:hover{
+
+transform:scale(1.05);
+
+}
+
+
+/* POEMS */
+
+.preview-section{
+
+max-width:900px;
+
+margin:120px auto;
+
+text-align:center;
+
+}
+
+.poem-card{
+
+background:var(--card-bg);
+
+border:1px solid var(--card-border);
+
+padding:20px;
+
+border-radius:12px;
+
+margin-bottom:20px;
+
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+.hero-gallery{
+
+grid-template-columns:1fr 1fr;
+
+padding:0 30px;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.hero-gallery{
+
+grid-template-columns:1fr;
+
+}
+
+.hero-intro h1{
+font-size:34px;
+}
 
 }
