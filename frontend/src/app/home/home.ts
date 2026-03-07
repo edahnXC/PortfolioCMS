@@ -26,17 +26,17 @@ export class Home implements OnInit {
 
     // Latest poems
     this.poemService.getPoems(1,2)
-    .subscribe((data:any[])=>{
-      this.poems=data
+    .subscribe((response: { data: any[]; totalCount: number })=>{
+      this.poems=response.data
     })
 
     // Fetch photos
     this.photoService.getPhotos(1,20)
-    .subscribe((data:any[])=>{
+    .subscribe((response: { data: any[]; totalCount: number })=>{
 
-      this.photos=data
+      this.photos=response.data
 
-      const shuffled = data.sort(() => 0.5 - Math.random())
+      const shuffled = response.data.sort(() => 0.5 - Math.random())
 
       this.heroImages = shuffled
       .slice(0,3)

@@ -12,8 +12,8 @@ export class PoemService {
   constructor(private http: HttpClient) {}
 
   // 🔵 Paginated poems (used in Poems page)
-  getPoems(page: number, pageSize: number): Observable<any[]> {
-    return this.http.get<any[]>(
+  getPoems(page: number, pageSize: number): Observable<{data:any[], totalCount: number}> {
+    return this.http.get<{data:any[], totalCount: number}>(
       `${this.apiUrl}?page=${page}&pageSize=${pageSize}`
     );
   }

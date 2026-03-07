@@ -1,14 +1,52 @@
-<h2>Gallery</h2>
+<section class="gallery-wrapper">
 
-<div class="gallery-container">
-  <div class="gallery-item" *ngFor="let photo of photos">
+<h1>Gallery</h1>
 
-    <img [src]="'https://localhost:7076/' + photo.imagePath" />
+<div class="carousel-scene">
 
-    <div class="overlay">
-      <p>{{photo.title}}</p>
-      <button *ngIf="isAdmin" (click)="deletePhoto(photo.id)">Delete</button>
-    </div>
+<div class="carousel-track" [ngStyle]="getTrackStyle()">
 
-  </div>
+<div
+class="carousel-card"
+*ngFor="let photo of carouselPhotos;let i=index"
+[ngStyle]="getCardStyle(i)">
+
+<img [src]="'https://localhost:7076/'+photo.imagePath">
+
 </div>
+
+</div>
+
+</div>
+
+
+<!-- pagination -->
+
+<div class="pagination">
+
+<button (click)="goToPage(1)" [disabled]="currentPage===1">
+<<
+</button>
+
+<button (click)="goToPage(currentPage-1)" [disabled]="currentPage===1">
+<
+</button>
+
+<button
+*ngFor="let p of pageNumbers"
+[class.active]="p===currentPage"
+(click)="goToPage(p)">
+{{p}}
+</button>
+
+<button (click)="goToPage(currentPage+1)" [disabled]="currentPage===totalPages">
+>
+</button>
+
+<button (click)="goToPage(totalPages)" [disabled]="currentPage===totalPages">
+>>
+</button>
+
+</div>
+
+</section>

@@ -12,8 +12,8 @@ export class PhotoService {
   constructor(private http: HttpClient) {}
 
   // 🔵 Paginated photos
-  getPhotos(page: number, pageSize: number): Observable<any[]> {
-    return this.http.get<any[]>(
+  getPhotos(page: number, pageSize: number): Observable<{data:any[], totalCount: number}> {
+    return this.http.get<{data:any[], totalCount: number}>(
       `${this.apiUrl}?page=${page}&pageSize=${pageSize}`
     );
   }

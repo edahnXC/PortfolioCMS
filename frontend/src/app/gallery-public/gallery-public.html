@@ -5,23 +5,89 @@
     <p>Moments captured through lens and perspective.</p>
   </div>
 
-  <div class="gallery-grid">
+  <!-- Conveyor Belt -->
+  <div class="carousel-wrapper">
+    <div class="carousel-fade carousel-fade--left"></div>
 
-    <div class="gallery-card" *ngFor="let photo of photos">
-
-      <img [src]="'https://localhost:7076/' + photo.imagePath" />
-
-      <div class="photo-title">
-        {{photo.title}}
+    <div class="carousel-viewport">
+      <div class="carousel-track">
+        <div
+          class="carousel-card"
+          *ngFor="let photo of carouselPhotos; let i = index"
+          (click)="openLightbox(photo, i)">
+          <img
+            [src]="'https://localhost:7076/' + photo.imagePath"
+            [alt]="photo.title"
+            draggable="false" />
+          <div class="card-label">{{ photo.title }}</div>
+        </div>
       </div>
-
     </div>
 
+    <div class="carousel-fade carousel-fade--right"></div>
+    <div class="carousel-blur-overlay" [class.active]="lightboxOpen"></div>
   </div>
 
- <div class="pagination">
-  <button (click)="prevPage()" *ngIf="currentPage > 1">Previous</button>
-  <button (click)="nextPage()">Next</button>
-</div>
+  <!-- Pagination -->
+  <div class="pagination-bar">
+    <button class="pg-btn"
+      (click)="goToPage(1)"
+      [disabled]="currentPage === 1"
+      title="First">&#171;</button>
+
+    <button class="pg-btn"
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      title="Previous">&#8249;</button>
+
+    <button
+      class="pg-btn pg-num"
+      *ngFor="let p of pageNumbers"
+      [class.active]="p === currentPage"
+      (click)="goToPage(p)">{{ p }}</button>
+
+    <button class="pg-btn"
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      title="Next">&#8250;</button>
+
+    <button class="pg-btn"
+      (click)="goToPage(totalPages)"
+      [disabled]="currentPage === totalPages"
+      title="Last">&#187;</button>
+  </div>
 
 </section>
+
+<!-- Lightbox -->
+<div class="lightbox-backdrop" [class.active]="lightboxOpen" (click)="onBackdropClick($event)">
+  <div class="lightbox-panel" *ngIf="activePhoto">
+
+    <button class="lb-close" (click)="closeLightbox()" title="Close">
+      <span></span>
+      <span></span>
+    </button>
+
+    <button class="lb-arrow lb-arrow--prev" (click)="lightboxPrev()" title="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+
+    <div class="lightbox-image-wrap">
+      <img
+        [src]="'https://localhost:7076/' + activePhoto.imagePath"
+        [alt]="activePhoto.title" />
+      <div class="lightbox-caption">{{ activePhoto.title }}</div>
+    </div>
+
+    <button class="lb-arrow lb-arrow--next" (click)="lightboxNext()" title="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
+
+  </div>
+</div>
