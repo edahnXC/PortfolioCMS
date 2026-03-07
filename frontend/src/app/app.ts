@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs/operators';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -17,13 +18,35 @@ export class App implements OnInit {
 
   darkMode = false;
   menuOpen = false;
+  isAdminRoute = false;
+
+  constructor(private router: Router) {}
 
   ngOnInit() {
-    // Restore saved theme on load
+    // Restore saved theme
     const saved = localStorage.getItem('theme');
     if (saved === 'dark') {
       this.darkMode = true;
       document.body.classList.add('dark-mode');
+    }
+
+    // Hide navbar and remove body padding on admin routes
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
+      if (this.isAdminRoute) {
+        document.body.classList.add('admin-route');
+      } else {
+        document.body.classList.remove('admin-route');
+      }
+    });
+
+    // Also check on first load (in case page refreshed on admin route)
+    const currentUrl = this.router.url;
+    if (currentUrl.startsWith('/admin')) {
+      this.isAdminRoute = true;
+      document.body.classList.add('admin-route');
     }
 
     setTimeout(() => this.initScrollReveal(), 100);
@@ -57,7 +80,6 @@ export class App implements OnInit {
   }
 
   initScrollReveal() {
-    // Fade up
     gsap.utils.toArray<HTMLElement>('.reveal').forEach(el => {
       gsap.fromTo(el,
         { opacity: 0, y: 40 },
@@ -74,7 +96,6 @@ export class App implements OnInit {
       );
     });
 
-    // Slide from left
     gsap.utils.toArray<HTMLElement>('.reveal-left').forEach(el => {
       gsap.fromTo(el,
         { opacity: 0, x: -50 },
@@ -91,7 +112,6 @@ export class App implements OnInit {
       );
     });
 
-    // Slide from right
     gsap.utils.toArray<HTMLElement>('.reveal-right').forEach(el => {
       gsap.fromTo(el,
         { opacity: 0, x: 50 },
@@ -108,7 +128,6 @@ export class App implements OnInit {
       );
     });
 
-    // Scale in
     gsap.utils.toArray<HTMLElement>('.reveal-scale').forEach(el => {
       gsap.fromTo(el,
         { opacity: 0, scale: 0.88 },

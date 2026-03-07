@@ -1,21 +1,213 @@
-<h2>Admin Dashboard</h2>
+<div class="admin-page">
 
-<div class="dashboard">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.open]="sidebarOpen">
+    <div class="sidebar-header">
+      <span class="sidebar-logo">Om <span>Admin</span></span>
+      <button class="sidebar-close" (click)="sidebarOpen = false">✕</button>
+    </div>
 
-  <button routerLink="/admin/add-poem">
-    ➕ Add Poem
-  </button>
+    <nav class="sidebar-nav">
+      <a class="nav-item" [class.active]="activeTab === 'overview'"   (click)="setTab('overview')">
+        <span class="nav-icon">📊</span> Overview
+      </a>
+      <a class="nav-item" [class.active]="activeTab === 'poems'"      (click)="setTab('poems')">
+        <span class="nav-icon">📝</span> Poems
+      </a>
+      <a class="nav-item" [class.active]="activeTab === 'photos'"     (click)="setTab('photos')">
+        <span class="nav-icon">🖼️</span> Photos
+      </a>
+      <a class="nav-item" [class.active]="activeTab === 'add-poem'"   (click)="setTab('add-poem')">
+        <span class="nav-icon">➕</span> Add Poem
+      </a>
+      <a class="nav-item" [class.active]="activeTab === 'add-photo'"  (click)="setTab('add-photo')">
+        <span class="nav-icon">📸</span> Upload Photo
+      </a>
+    </nav>
 
-  <button routerLink="/admin/upload-photo">
-    📸 Upload Photo
-  </button>
+    <button class="logout-btn" (click)="logout()">
+      <span>🚪</span> Logout
+    </button>
+  </aside>
 
-  <button routerLink="/gallery">
-    🖼️ View Gallery
-  </button>
+  <!-- Overlay for mobile sidebar -->
+  <div class="sidebar-overlay" [class.visible]="sidebarOpen" (click)="sidebarOpen = false"></div>
 
-  <button (click)="logout()">
-    🚪 Logout
-  </button>
+  <!-- Main content -->
+  <main class="main-content">
 
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="menu-btn" (click)="sidebarOpen = true">☰</button>
+      <h1 class="page-title">{{ tabTitle }}</h1>
+      <div class="topbar-right">
+        <a routerLink="/gallery" target="_blank" class="view-site-btn">View Site ↗</a>
+      </div>
+    </header>
+
+    <!-- ── OVERVIEW ── -->
+    <section *ngIf="activeTab === 'overview'" class="tab-content">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📝</div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalPoems }}</span>
+            <span class="stat-label">Total Poems</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🖼️</div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalPhotos }}</span>
+            <span class="stat-label">Total Photos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="action-grid">
+          <button class="action-btn" (click)="setTab('add-poem')">➕ Add Poem</button>
+          <button class="action-btn" (click)="setTab('add-photo')">📸 Upload Photo</button>
+          <button class="action-btn" (click)="setTab('poems')">📝 Manage Poems</button>
+          <button class="action-btn" (click)="setTab('photos')">🖼️ Manage Photos</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── POEMS LIST ── -->
+    <section *ngIf="activeTab === 'poems'" class="tab-content">
+      <div class="list-header">
+        <span>{{ totalPoems }} poems total</span>
+        <button class="add-btn" (click)="setTab('add-poem')">➕ Add New</button>
+      </div>
+
+      <div class="poem-list">
+        <div class="poem-row" *ngFor="let poem of poems">
+
+          <!-- View mode -->
+          <div *ngIf="editingPoemId !== poem.id" class="poem-row-view">
+            <div class="poem-row-info">
+              <span class="poem-row-title">{{ poem.title }}</span>
+              <span class="poem-row-meta">{{ poem.category }} · {{ poem.createdDate | date:'mediumDate' }}</span>
+            </div>
+            <div class="poem-row-actions">
+              <button class="icon-btn edit" (click)="startEditPoem(poem)" title="Edit">✏️</button>
+              <button class="icon-btn delete" (click)="deletePoem(poem.id)" title="Delete">🗑️</button>
+            </div>
+          </div>
+
+          <!-- Edit mode -->
+          <div *ngIf="editingPoemId === poem.id" class="poem-row-edit">
+            <input [(ngModel)]="editPoem.title"    placeholder="Title"    class="edit-input" />
+            <input [(ngModel)]="editPoem.category" placeholder="Category" class="edit-input" />
+            <textarea [(ngModel)]="editPoem.content" placeholder="Content" class="edit-textarea"></textarea>
+            <div class="edit-actions">
+              <button class="save-btn"   (click)="savePoem(poem.id)">Save</button>
+              <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-bar" *ngIf="poemTotalPages > 1">
+        <button class="pg-btn" (click)="loadPoems(poemPage - 1)" [disabled]="poemPage === 1">‹</button>
+        <span class="pg-info">{{ poemPage }} / {{ poemTotalPages }}</span>
+        <button class="pg-btn" (click)="loadPoems(poemPage + 1)" [disabled]="poemPage === poemTotalPages">›</button>
+      </div>
+    </section>
+
+    <!-- ── PHOTOS LIST ── -->
+    <section *ngIf="activeTab === 'photos'" class="tab-content">
+      <div class="list-header">
+        <span>{{ totalPhotos }} photos total</span>
+        <button class="add-btn" (click)="setTab('add-photo')">📸 Upload New</button>
+      </div>
+
+      <div class="photo-grid">
+        <div class="photo-card" *ngFor="let photo of photos">
+          <img [src]="'https://localhost:7076/' + photo.imagePath" [alt]="photo.title" />
+
+          <!-- View mode -->
+          <div *ngIf="editingPhotoId !== photo.id" class="photo-card-footer">
+            <span class="photo-title">{{ photo.title }}</span>
+            <div class="photo-actions">
+              <button class="icon-btn edit"   (click)="startEditPhoto(photo)" title="Edit">✏️</button>
+              <button class="icon-btn delete" (click)="deletePhoto(photo.id)" title="Delete">🗑️</button>
+            </div>
+          </div>
+
+          <!-- Edit mode -->
+          <div *ngIf="editingPhotoId === photo.id" class="photo-edit-mode">
+            <input [(ngModel)]="editPhotoTitle" placeholder="New title" class="edit-input" />
+            <div class="edit-actions">
+              <button class="save-btn"   (click)="savePhoto(photo.id)">Save</button>
+              <button class="cancel-btn" (click)="editingPhotoId = null">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-bar" *ngIf="photoTotalPages > 1">
+        <button class="pg-btn" (click)="loadPhotos(photoPage - 1)" [disabled]="photoPage === 1">‹</button>
+        <span class="pg-info">{{ photoPage }} / {{ photoTotalPages }}</span>
+        <button class="pg-btn" (click)="loadPhotos(photoPage + 1)" [disabled]="photoPage === photoTotalPages">›</button>
+      </div>
+    </section>
+
+    <!-- ── ADD POEM ── -->
+    <section *ngIf="activeTab === 'add-poem'" class="tab-content">
+      <div class="form-card">
+        <div class="field">
+          <label>Title</label>
+          <input type="text" [(ngModel)]="newPoem.title" placeholder="Poem title" />
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <input type="text" [(ngModel)]="newPoem.category" placeholder="e.g. हिंदी / English" />
+        </div>
+        <div class="field">
+          <label>Content</label>
+          <textarea [(ngModel)]="newPoem.content" placeholder="Write your poem here..." rows="12"></textarea>
+        </div>
+        <button class="submit-btn" (click)="addPoem()" [disabled]="addingPoem">
+          <span *ngIf="!addingPoem">Publish Poem</span>
+          <span *ngIf="addingPoem" class="spinner"></span>
+        </button>
+        <div class="success-msg" *ngIf="poemSuccess">✅ Poem published successfully!</div>
+      </div>
+    </section>
+
+    <!-- ── UPLOAD PHOTO ── -->
+    <section *ngIf="activeTab === 'add-photo'" class="tab-content">
+      <div class="form-card">
+        <div class="field">
+          <label>Photo Title</label>
+          <input type="text" [(ngModel)]="newPhotoTitle" placeholder="Enter a title" />
+        </div>
+
+        <div class="field">
+          <label>Select Image</label>
+          <div class="file-drop" (click)="fileInput.click()" (dragover)="$event.preventDefault()" (drop)="onDrop($event)">
+            <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+            <div *ngIf="!previewUrl" class="file-drop-placeholder">
+              <span class="upload-icon">📁</span>
+              <p>Click to browse or drag & drop</p>
+              <small>JPG, PNG, WEBP supported</small>
+            </div>
+            <img *ngIf="previewUrl" [src]="previewUrl" class="preview-img" alt="Preview" />
+          </div>
+        </div>
+
+        <button class="submit-btn" (click)="uploadPhoto()" [disabled]="uploadingPhoto">
+          <span *ngIf="!uploadingPhoto">Upload Photo</span>
+          <span *ngIf="uploadingPhoto" class="spinner"></span>
+        </button>
+        <div class="success-msg" *ngIf="photoSuccess">✅ Photo uploaded successfully!</div>
+      </div>
+    </section>
+
+  </main>
 </div>
