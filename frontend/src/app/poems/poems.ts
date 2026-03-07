@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PoemService } from '../services/poem';
 
@@ -18,7 +18,10 @@ export class Poems implements OnInit {
   totalPages = 1;
   pageNumbers: number[] = [];
 
-  constructor(private poemService: PoemService) {}
+  constructor(
+    private poemService: PoemService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.loadPoems();
@@ -31,6 +34,7 @@ export class Poems implements OnInit {
         this.totalCount = response.totalCount ?? 0;
         this.totalPages = Math.ceil(this.totalCount / this.pageSize) || 1;
         this.buildPageNumbers();
+        this.cdr.detectChanges();
       });
   }
 
