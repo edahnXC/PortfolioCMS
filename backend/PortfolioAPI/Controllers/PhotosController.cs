@@ -22,13 +22,19 @@ namespace PortfolioAPI.Controllers
             int page = 1,
             int pageSize = 8)
         {
-            var photos = await _context.Photos
+            var totalCount = await _context.Photos.CountAsync();
+
+            var photos=await _context.Photos
                 .OrderByDescending(p => p.UploadedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync(); 
 
-            return photos;
+            return Ok(new
+            {
+                data = photos,
+                totalCount = totalCount,
+            });
         }
 
         // 🔴 ADMIN ONLY - Upload Photo

@@ -23,13 +23,19 @@ namespace PortfolioAPI.Controllers
             int page = 1,
             int pageSize = 6)
         {
-            var poems = await _context.Poems
+            var totalCount=await _context.Poems.CountAsync();
+
+            var poems=await _context.Poems
                 .OrderByDescending(p => p.CreatedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            return poems;
+            return Ok(new
+            {
+                data = poems,
+                totalCount = totalCount,
+            });
         }
 
         // 🟢 PUBLIC - Anyone can view specific poem
