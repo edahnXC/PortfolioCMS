@@ -1,0 +1,42 @@
+<section class="hero-intro">
+
+<h1>
+Capturing the <span>Essence</span> of Moments
+</h1>
+
+<p>
+Through the lens of creativity and structured expression.
+Photography and poetry intersect here.
+</p>
+
+</section>
+
+
+<section class="hero-gallery">
+<div class="masonry">
+<div class="masonry-image"
+     *ngFor="let img of heroImages">
+
+<img [src]="img">
+
+</div>
+</div>
+
+</section>
+
+
+<section class="preview-section">
+
+<h2>Latest Poems</h2>
+
+<div class="poem-card" *ngFor="let poem of poems">
+
+<h3>{{poem.title}}</h3>
+
+<p>{{poem.content}}</p>
+
+</div>
+
+<button routerLink="/poems">View More Poems</button>
+
+</section>

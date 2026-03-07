@@ -1,0 +1,17 @@
+<section class="admin-upload">
+
+<h1>Upload Photo</h1>
+
+<input type="file" (change)="onFileSelected($event)" />
+
+<input
+type="text"
+placeholder="Photo title"
+[(ngModel)]="title"
+/>
+
+<button (click)="uploadPhoto()">
+Upload Photo
+</button>
+
+</section>
