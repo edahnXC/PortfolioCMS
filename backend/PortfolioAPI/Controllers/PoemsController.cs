@@ -6,6 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PortfolioAPI.Controllers
 {
+    // Simple DTO — avoids validation issues when only updating editable fields
+    public class UpdatePoemRequest
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class PoemsController : ControllerBase
@@ -23,30 +31,22 @@ namespace PortfolioAPI.Controllers
             int page = 1,
             int pageSize = 6)
         {
-            var totalCount=await _context.Poems.CountAsync();
-
-            var poems=await _context.Poems
+            var totalCount = await _context.Poems.CountAsync();
+            var poems = await _context.Poems
                 .OrderByDescending(p => p.CreatedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            return Ok(new
-            {
-                data = poems,
-                totalCount = totalCount,
-            });
+            return Ok(new { data = poems, totalCount });
         }
 
-        // 🟢 PUBLIC - Anyone can view specific poem
+        // 🟢 PUBLIC - Single poem
         [HttpGet("{id}")]
         public async Task<ActionResult<Poem>> GetPoem(int id)
         {
             var poem = await _context.Poems.FindAsync(id);
-
-            if (poem == null)
-                return NotFound();
-
+            if (poem == null) return NotFound();
             return poem;
         }
 
@@ -57,21 +57,22 @@ namespace PortfolioAPI.Controllers
         {
             _context.Poems.Add(poem);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction(nameof(GetPoem), new { id = poem.Id }, poem);
         }
 
-        // 🔴 ADMIN ONLY - Update Poem
+        // 🔴 ADMIN ONLY - Update Poem (DTO avoids id mismatch / validation errors)
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePoem(int id, Poem poem)
+        public async Task<IActionResult> UpdatePoem(int id, [FromBody] UpdatePoemRequest request)
         {
-            if (id != poem.Id)
-                return BadRequest();
+            var poem = await _context.Poems.FindAsync(id);
+            if (poem == null) return NotFound();
 
-            _context.Entry(poem).State = EntityState.Modified;
+            poem.Title = request.Title;
+            poem.Content = request.Content;
+            poem.Category = request.Category;
+
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
@@ -81,13 +82,10 @@ namespace PortfolioAPI.Controllers
         public async Task<IActionResult> DeletePoem(int id)
         {
             var poem = await _context.Poems.FindAsync(id);
-
-            if (poem == null)
-                return NotFound();
+            if (poem == null) return NotFound();
 
             _context.Poems.Remove(poem);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
     }

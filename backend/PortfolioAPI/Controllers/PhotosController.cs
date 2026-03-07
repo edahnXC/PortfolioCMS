@@ -6,6 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PortfolioAPI.Controllers
 {
+    // Simple DTO — avoids model validation errors on PUT
+    public class UpdatePhotoRequest
+    {
+        public string Title { get; set; } = string.Empty;
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class PhotosController : ControllerBase
@@ -16,25 +22,30 @@ namespace PortfolioAPI.Controllers
         {
             _context = context;
         }
-        /// 🟢 PUBLIC - Paginated Photos
+
+        // 🟢 PUBLIC - Paginated Photos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos(
             int page = 1,
             int pageSize = 8)
         {
             var totalCount = await _context.Photos.CountAsync();
-
-            var photos=await _context.Photos
+            var photos = await _context.Photos
                 .OrderByDescending(p => p.UploadedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync(); 
+                .ToListAsync();
 
-            return Ok(new
-            {
-                data = photos,
-                totalCount = totalCount,
-            });
+            return Ok(new { data = photos, totalCount });
+        }
+
+        // 🟢 PUBLIC - Single photo
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Photo>> GetPhoto(int id)
+        {
+            var photo = await _context.Photos.FindAsync(id);
+            if (photo == null) return NotFound();
+            return photo;
         }
 
         // 🔴 ADMIN ONLY - Upload Photo
@@ -46,7 +57,6 @@ namespace PortfolioAPI.Controllers
                 return BadRequest("No file uploaded.");
 
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
-
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
@@ -67,23 +77,36 @@ namespace PortfolioAPI.Controllers
 
             _context.Photos.Add(photo);
             await _context.SaveChangesAsync();
-
             return Ok(photo);
         }
 
-        // 🔴 ADMIN ONLY - Delete Photo
+        // 🔴 ADMIN ONLY - Update Photo title only (DTO avoids validation errors)
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePhoto(int id, [FromBody] UpdatePhotoRequest request)
+        {
+            var photo = await _context.Photos.FindAsync(id);
+            if (photo == null) return NotFound();
+
+            photo.Title = request.Title;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        // 🔴 ADMIN ONLY - Delete Photo + physical file
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoto(int id)
         {
             var photo = await _context.Photos.FindAsync(id);
+            if (photo == null) return NotFound();
 
-            if (photo == null)
-                return NotFound();
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), photo.ImagePath);
+            if (System.IO.File.Exists(filePath))
+                System.IO.File.Delete(filePath);
 
             _context.Photos.Remove(photo);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
     }

@@ -8,6 +8,12 @@ using System.Text;
 
 namespace PortfolioAPI.Controllers
 {
+    public class LoginRequest
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -22,28 +28,32 @@ namespace PortfolioAPI.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(Admin admin)
+        public IActionResult Login([FromBody] LoginRequest request)
         {
             var existingAdmin = _context.Admins
-                .FirstOrDefault(a => a.Username == admin.Username && a.Password == admin.Password);
+                .FirstOrDefault(a => a.Username == request.Username);
 
             if (existingAdmin == null)
                 return Unauthorized();
 
+            bool passwordValid = BCrypt.Net.BCrypt.Verify(request.Password, existingAdmin.PasswordHash);
+
+            if (!passwordValid)
+                return Unauthorized();
+
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, admin.Username)
+                new Claim(ClaimTypes.Name, existingAdmin.Username)
             };
 
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+                Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials:
-                    new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+                expires: DateTime.UtcNow.AddHours(2),
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
 
             return Ok(new
@@ -51,5 +61,7 @@ namespace PortfolioAPI.Controllers
                 token = new JwtSecurityTokenHandler().WriteToken(token)
             });
         }
+
+        
     }
 }
