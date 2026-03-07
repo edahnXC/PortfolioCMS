@@ -1,0 +1,74 @@
+.about-wrapper {
+  background:var(--bg-primary);
+  padding: 100px 80px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.about-header h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.about-header p {
+  color: var(--text-secondary);
+  margin-bottom: 60px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 60px;
+}
+
+.about-text h2 {
+  margin-bottom: 20px;
+}
+
+.about-text p {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+/* Skills */
+
+.skills-card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  color: var(--text-primary);
+}
+
+.skills-card h3 {
+  margin-bottom: 20px;
+  background: var(--card-bg);
+  padding: 25px;
+  border:1px solid var(--card-border);
+}
+
+/* Projects */
+
+.projects-section {
+  margin-top: 80px;
+}
+
+.project-card {
+  background: var(--card-bg);
+  padding: 25px;
+  border:1px solid var(--card-border);
+  max-width: 600px;
+  color: var(--text-primary);
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .about-wrapper {
+    padding: 60px 30px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+}

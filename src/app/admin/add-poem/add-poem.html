@@ -1,0 +1,30 @@
+<h2>Add Poem</h2>
+
+<form (ngSubmit)="addPoem()">
+  <input type="text"
+         [(ngModel)]="poem.title"
+         name="title"
+         placeholder="Title"
+         required />
+
+  <br /><br />
+
+  <textarea
+         [(ngModel)]="poem.content"
+         name="content"
+         placeholder="Content"
+         required>
+  </textarea>
+
+  <br /><br />
+
+  <input type="text"
+         [(ngModel)]="poem.category"
+         name="category"
+         placeholder="Category"
+         required />
+
+  <br /><br />
+
+  <button type="submit">Add Poem</button>
+</form>
