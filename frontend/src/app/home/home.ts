@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { PoemService } from "../services/poem";
 import { PhotoService } from '../services/photo';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
 })
@@ -38,7 +39,7 @@ export class Home implements OnInit {
       const shuffled = data.sort(() => 0.5 - Math.random())
 
       this.heroImages = shuffled
-      .slice(0,5)
+      .slice(0,3)
       .map(p => 'https://localhost:7076/' + p.imagePath)
 
     })
