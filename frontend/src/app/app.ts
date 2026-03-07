@@ -1,23 +1,128 @@
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router'; // Added RouterLink
+import { Component, OnInit, HostListener } from '@angular/core';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule], // Added RouterLink here too
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements OnInit {
+
   darkMode = false;
+  menuOpen = false;
+
+  ngOnInit() {
+    // Restore saved theme on load
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+      this.darkMode = true;
+      document.body.classList.add('dark-mode');
+    }
+
+    setTimeout(() => this.initScrollReveal(), 100);
+  }
 
   toggleTheme() {
     this.darkMode = !this.darkMode;
-    if (this.darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
+    document.body.classList.toggle('dark-mode', this.darkMode);
+    localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+    document.body.style.overflow = this.menuOpen ? 'hidden' : '';
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+    document.body.style.overflow = '';
+  }
+
+  onOverlayClick(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('mobile-menu')) {
+      this.closeMenu();
     }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    this.closeMenu();
+  }
+
+  initScrollReveal() {
+    // Fade up
+    gsap.utils.toArray<HTMLElement>('.reveal').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // Slide from left
+    gsap.utils.toArray<HTMLElement>('.reveal-left').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, x: -50 },
+        {
+          opacity: 1, x: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // Slide from right
+    gsap.utils.toArray<HTMLElement>('.reveal-right').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, x: 50 },
+        {
+          opacity: 1, x: 0,
+          duration: 0.7,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // Scale in
+    gsap.utils.toArray<HTMLElement>('.reveal-scale').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, scale: 0.88 },
+        {
+          opacity: 1, scale: 1,
+          duration: 0.6,
+          ease: 'back.out(1.4)',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
   }
 }

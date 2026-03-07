@@ -1,25 +1,58 @@
+<!-- Navbar -->
 <nav class="navbar">
 
-  <div class="logo">
-    Om <span>Portfolio</span>
-  </div>
+  <a class="logo" routerLink="/">Om <span>Portfolio</span></a>
 
   <div class="nav-right">
 
+    <!-- Desktop links -->
     <div class="nav-links">
-      <a routerLink="/">Home</a>
-      <a routerLink="/poems">Poems</a>
-      <a routerLink="/gallery">Gallery</a>
-      <a routerLink="/about">About</a>
+      <a routerLink="/"        routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+      <a routerLink="/poems"   routerLinkActive="active">Poems</a>
+      <a routerLink="/gallery" routerLinkActive="active">Gallery</a>
+      <a routerLink="/about"   routerLinkActive="active">About</a>
     </div>
 
+    <!-- Theme toggle -->
     <button class="theme-toggle" (click)="toggleTheme()">
       <span *ngIf="!darkMode">🌙</span>
       <span *ngIf="darkMode">☀️</span>
     </button>
 
-  </div>
+    <!-- Hamburger (visible on mobile only) -->
+    <button class="hamburger" [class.open]="menuOpen" (click)="toggleMenu()" aria-label="Toggle menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
 
+  </div>
 </nav>
+
+<!-- Mobile menu drawer -->
+<div class="mobile-menu" [class.open]="menuOpen" (click)="onOverlayClick($event)">
+  <div class="mobile-menu-panel">
+
+    <a routerLink="/"        routerLinkActive="active"
+       [routerLinkActiveOptions]="{exact:true}"
+       (click)="closeMenu()">Home</a>
+
+    <a routerLink="/poems"   routerLinkActive="active"
+       (click)="closeMenu()">Poems</a>
+
+    <a routerLink="/gallery" routerLinkActive="active"
+       (click)="closeMenu()">Gallery</a>
+
+    <a routerLink="/about"   routerLinkActive="active"
+       (click)="closeMenu()">About</a>
+
+    <!-- Theme toggle inside drawer too for convenience -->
+    <button class="theme-toggle mobile-theme-toggle" (click)="toggleTheme()">
+      <span *ngIf="!darkMode">🌙 Light</span>
+      <span *ngIf="darkMode">☀️ Dark</span>
+    </button>
+
+  </div>
+</div>
 
 <router-outlet></router-outlet>

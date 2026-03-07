@@ -1,110 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 /* ============================= */
-/* GLOBAL THEME VARIABLES */
+/* GLOBAL THEME VARIABLES        */
 /* ============================= */
 
-:root{
-
---accent:#3b82f6;
-
-/* backgrounds */
---bg-primary:#f8fafc;
---bg-secondary:#ffffff;
-
-/* text */
---text-primary:#0f172a;
---text-secondary:#64748b;
-
-/* cards */
---card-bg:#ffffff;
---card-border:#e2e8f0;
-
-/* hero gradient */
---hero-gradient: linear-gradient(
-135deg,
-#0f172a 0%,
-#1e293b 50%,
-#0f172a 100%
-);
-
+:root {
+  --accent:        #3b82f6;
+  --bg-primary:    #f8fafc;
+  --bg-secondary:  #ffffff;
+  --text-primary:  #0f172a;
+  --text-secondary:#64748b;
+  --card-bg:       #ffffff;
+  --card-border:   #e2e8f0;
+  --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
 }
 
 /* ============================= */
-/* DARK MODE */
+/* DARK MODE                     */
 /* ============================= */
 
-body.dark-mode{
-
---bg-primary:#020617;
---bg-secondary:#0f172a;
-
---text-primary:#e2e8f0;
---text-secondary:#94a3b8;
-
---card-bg:#1e293b;
---card-border:#334155;
-
---accent:#60a5fa;
-
+body.dark-mode {
+  --bg-primary:    #020617;
+  --bg-secondary:  #0f172a;
+  --text-primary:  #e2e8f0;
+  --text-secondary:#94a3b8;
+  --card-bg:       #1e293b;
+  --card-border:   #334155;
+  --accent:        #60a5fa;
 }
 
 /* ============================= */
-/* GLOBAL BODY */
+/* GLOBAL BODY                   */
 /* ============================= */
 
-body{
-margin:0;
-font-family:'Poppins',sans-serif;
-padding-top:90px;
-background:var(--bg-primary);
-color:var(--text-primary);
-
-transition:background 0.3s ease,color 0.3s ease;
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  padding-top: 90px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* ============================= */
-/* GLOBAL SECTION LAYOUT */
+/* GLOBAL SECTION LAYOUT         */
 /* ============================= */
 
-.preview-section{
-
-padding:100px 80px;
-max-width:1200px;
-margin:auto;
-
+.preview-section {
+  padding: 100px 80px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.preview-section h2{
-
-font-size:34px;
-margin-bottom:40px;
-
+.preview-section h2 {
+  font-size: 34px;
+  margin-bottom: 40px;
 }
 
 /* ============================= */
-/* BUTTONS */
+/* BUTTONS                       */
 /* ============================= */
 
-button{
-
-background:var(--accent);
-color:white;
-
-border:none;
-border-radius:25px;
-
-padding:12px 28px;
-
-font-size:15px;
-
-cursor:pointer;
-
-transition:0.25s;
-
+button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 28px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.25s;
 }
 
-button:hover{
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
 
-transform:translateY(-2px);
-box-shadow:0 8px 20px rgba(0,0,0,0.15);
+/* ============================= */
+/* SCROLL REVEAL BASE CLASS      */
+/* (GSAP sets opacity/transform) */
+/* ============================= */
 
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  /* GSAP will animate these to opacity:1, translateY:0 */
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.88);
+}
+
+/* ============================= */
+/* RESPONSIVE                    */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .preview-section {
+    padding: 60px 24px;
+  }
+
+  .preview-section h2 {
+    font-size: 26px;
+  }
 }
