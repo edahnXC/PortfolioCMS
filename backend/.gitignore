@@ -10,7 +10,10 @@
 /node_modules
 npm-debug.log
 yarn-error.log
-
+backend/PortfolioAPI/obj/
+backend/PortfolioAPI/bin/
+frontend/backend/
+frontend/frontend/
 # IDEs and editors
 .idea/
 .project

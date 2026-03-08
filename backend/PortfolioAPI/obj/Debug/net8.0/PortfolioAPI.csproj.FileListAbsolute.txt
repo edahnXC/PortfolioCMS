@@ -213,3 +213,11 @@ F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\zh-Hans\Microsoft.Code
 F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Npgsql.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
