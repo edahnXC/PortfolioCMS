@@ -32,8 +32,12 @@ export class PhotoService {
   }
 
   uploadPhoto(formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/upload`, formData, this.authHeaders());
-  }
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+        Authorization: `Bearer ${token ?? ''}`
+    });
+    return this.http.post(`${this.apiUrl}/upload`, formData, { headers });
+}
 
   updatePhoto(id: number, title: string): Observable<any> {
     return this.http.put(
