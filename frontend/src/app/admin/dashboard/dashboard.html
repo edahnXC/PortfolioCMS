@@ -128,7 +128,7 @@
 
       <div class="photo-grid">
         <div class="photo-card" *ngFor="let photo of photos">
-          <img [src]="'https://localhost:7076/' + photo.imagePath" [alt]="photo.title" />
+          <img [src]="photo.imagePath" [alt]="photo.title" />
 
           <!-- View mode -->
           <div *ngIf="editingPhotoId !== photo.id" class="photo-card-footer">

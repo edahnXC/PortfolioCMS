@@ -39,7 +39,7 @@ export class Home implements OnInit {
 
         this.heroImages = shuffled
           .slice(0, 3)
-          .map(p => 'https://localhost:7076/' + p.imagePath);
+          .map(p => p.imagePath);
 
         this.cdr.detectChanges();
       });
