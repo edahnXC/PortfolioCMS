@@ -37,8 +37,23 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// ── Connection string: handle both URI and key=value formats ──
+var rawConn = builder.Configuration.GetConnectionString("DefaultConnection")
+              ?? Environment.GetEnvironmentVariable("DATABASE_URL")
+              ?? "";
+
+if (rawConn.StartsWith("postgres://") || rawConn.StartsWith("postgresql://"))
+{
+  var uri = new Uri(rawConn);
+  var userInfo = uri.UserInfo.Split(':');
+  rawConn = $"Host={uri.Host};Port={uri.Port};" +
+            $"Database={uri.AbsolutePath.TrimStart('/')};" +
+            $"Username={userInfo[0]};Password={userInfo[1]};" +
+            $"SSL Mode=Require;Trust Server Certificate=true";
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(rawConn));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -61,32 +76,27 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddCors(options =>
 {
-  options.AddPolicy("AllowAngular",
-      policy =>
-      {
-        policy.WithOrigins(
-              "http://localhost:4200",
-              "https://portfolionlf.netlify.app" 
-          )
-          .AllowAnyHeader()
-          .AllowAnyMethod();
-      });
+  options.AddPolicy("AllowAngular", policy =>
+  {
+    policy.WithOrigins(
+        "http://localhost:4200",
+        "https://portfoliocms.netlify.app"  // replace with your actual Netlify URL
+    )
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+  });
 });
 
 var app = builder.Build();
 
-// Always show Swagger (useful for testing deployed API)
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// 🔴 CORS MUST BE BEFORE AUTH
 app.UseCors("AllowAngular");
-
-// 🔴 THEN AUTH
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 🔴 CREATE UPLOADS FOLDER IF IT DOESN'T EXIST (fixes container deployment)
+// Create Uploads folder if missing (fixes container deployment)
 var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
 if (!Directory.Exists(uploadsPath))
   Directory.CreateDirectory(uploadsPath);
