@@ -84,7 +84,8 @@ builder.Services.AddCors(options =>
         "https://portfolionlf.netlify.app"  // replace with your actual Netlify URL
     )
     .AllowAnyHeader()
-    .AllowAnyMethod();
+    .AllowAnyMethod()
+    .WithExposedHeaders("*");
   });
 });
 
@@ -92,6 +93,20 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.Use(async (context, next) =>
+{
+  context.Response.Headers.Append("Access-Control-Allow-Origin", "https://portfolionlf.netlify.app");
+  if (context.Request.Method == "OPTIONS")
+  {
+    context.Response.Headers.Append("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    context.Response.Headers.Append("Access-Control-Allow-Headers", "*");
+    context.Response.StatusCode = 200;
+    return;
+  }
+  await next();
+});
+
+app.UseCors("AllowAngular");
 
 app.UseCors("AllowAngular");
 app.UseAuthentication();
