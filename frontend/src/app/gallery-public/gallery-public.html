@@ -16,7 +16,7 @@
           *ngFor="let photo of carouselPhotos; let i = index"
           (click)="openLightbox(photo, i)">
           <img
-            [src]="'https://localhost:7076/' + photo.imagePath"
+            [src]="photo.imagePath"
             [alt]="photo.title"
             draggable="false" />
           <div class="card-label">{{ photo.title }}</div>
@@ -77,7 +77,7 @@
 
     <div class="lightbox-image-wrap">
       <img
-        [src]="'https://localhost:7076/' + activePhoto.imagePath"
+        [src]="activePhoto.imagePath"
         [alt]="activePhoto.title" />
       <div class="lightbox-caption">{{ activePhoto.title }}</div>
     </div>
