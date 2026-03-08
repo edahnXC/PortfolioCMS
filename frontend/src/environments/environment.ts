@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7076'
+  apiUrl: 'portfoliocms-production-12d1.up.railway.app'
 };
