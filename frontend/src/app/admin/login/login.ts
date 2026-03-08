@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,7 @@ export class Login implements OnInit {
     this.loading = true;
     this.errorMsg = '';
 
-    this.http.post<any>('https://localhost:7076/api/Auth/login', {
+    this.http.post<any>(`${environment.apiUrl}/api/Auth/login`, {
       username: this.username,
       password: this.password
     }).subscribe({
