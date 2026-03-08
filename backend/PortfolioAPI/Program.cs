@@ -1,11 +1,12 @@
-using Npgsql.EntityFrameworkCore.PostgreSQL;
-using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.Extensions.FileProviders;
-using PortfolioAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using PortfolioAPI.Data;
+using PortfolioAPI.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -80,7 +81,7 @@ builder.Services.AddCors(options =>
   {
     policy.WithOrigins(
         "http://localhost:4200",
-        "https://portfoliocms.netlify.app"  // replace with your actual Netlify URL
+        "https://portfolionlf.netlify.app"  // replace with your actual Netlify URL
     )
     .AllowAnyHeader()
     .AllowAnyMethod();
@@ -114,5 +115,19 @@ using (var scope = app.Services.CreateScope())
   db.Database.Migrate();
 }
 
+// Seed admin user if not exists
+using (var scope = app.Services.CreateScope())
+{
+  var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+  if (!context.Admins.Any())
+  {
+    context.Admins.Add(new Admin
+    {
+      Username = "admin",
+      PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123")
+    });
+    context.SaveChanges();
+  }
+}
 app.MapControllers();
 app.Run();
