@@ -13,16 +13,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Enter JWT Token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT"
-    });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+  options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+  {
+    In = ParameterLocation.Header,
+    Description = "Enter JWT Token",
+    Name = "Authorization",
+    Type = SecuritySchemeType.Http,
+    Scheme = "bearer",
+    BearerFormat = "JWT"
+  });
+  options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -45,57 +45,60 @@ var rawConn = builder.Configuration.GetConnectionString("DefaultConnection")
 
 if (rawConn.StartsWith("postgres://") || rawConn.StartsWith("postgresql://"))
 {
-    var uri = new Uri(rawConn);
-    var userInfo = uri.UserInfo.Split(':');
-    rawConn = $"Host={uri.Host};Port={uri.Port};" +
-              $"Database={uri.AbsolutePath.TrimStart('/')};" +
-              $"Username={userInfo[0]};Password={userInfo[1]};" +
-              $"SSL Mode=Require;Trust Server Certificate=true";
+  var uri = new Uri(rawConn);
+  var userInfo = uri.UserInfo.Split(':');
+  rawConn = $"Host={uri.Host};Port={uri.Port};" +
+            $"Database={uri.AbsolutePath.TrimStart('/')};" +
+            $"Username={userInfo[0]};Password={userInfo[1]};" +
+            $"SSL Mode=Require;Trust Server Certificate=true";
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(rawConn));
 
 // ── Cloudinary ──
-var cloudinaryAccount = new Account(
-    builder.Configuration["Cloudinary__CloudName"],
-    builder.Configuration["Cloudinary__ApiKey"],
-    builder.Configuration["Cloudinary__ApiSecret"]
-);
+var cloudName = builder.Configuration["Cloudinary__CloudName"]
+                ?? Environment.GetEnvironmentVariable("Cloudinary__CloudName") ?? "";
+var apiKey = builder.Configuration["Cloudinary__ApiKey"]
+             ?? Environment.GetEnvironmentVariable("Cloudinary__ApiKey") ?? "";
+var apiSecret = builder.Configuration["Cloudinary__ApiSecret"]
+                ?? Environment.GetEnvironmentVariable("Cloudinary__ApiSecret") ?? "";
+
+var cloudinaryAccount = new Account(cloudName, apiKey, apiSecret);
 builder.Services.AddSingleton(new Cloudinary(cloudinaryAccount));
 
 // ── JWT ──
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-    var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!);
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
-    };
+  var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!);
+  options.TokenValidationParameters = new TokenValidationParameters
+  {
+    ValidateIssuer = true,
+    ValidateAudience = false,
+    ValidateLifetime = true,
+    ValidateIssuerSigningKey = true,
+    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+    IssuerSigningKey = new SymmetricSecurityKey(key)
+  };
 });
 
 // ── CORS ──
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular", policy =>
-    {
-        policy.WithOrigins(
-            "http://localhost:4200",
-            "https://portfolionlf.netlify.app"
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-    });
+  options.AddPolicy("AllowAngular", policy =>
+  {
+    policy.WithOrigins(
+        "http://localhost:4200",
+        "https://portfolionlf.netlify.app"
+    )
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+  });
 });
 
 var app = builder.Build();
@@ -106,37 +109,37 @@ app.UseCors("AllowAngular");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Create Uploads folder (kept for backwards compat)
+// Create Uploads folder
 var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
 if (!Directory.Exists(uploadsPath))
-    Directory.CreateDirectory(uploadsPath);
+  Directory.CreateDirectory(uploadsPath);
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(uploadsPath),
-    RequestPath = "/Uploads"
+  FileProvider = new PhysicalFileProvider(uploadsPath),
+  RequestPath = "/Uploads"
 });
 
 // Auto-run migrations
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+  var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+  db.Database.Migrate();
 }
 
 // Seed admin
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    if (!context.Admins.Any())
+  var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+  if (!context.Admins.Any())
+  {
+    context.Admins.Add(new Admin
     {
-        context.Admins.Add(new Admin
-        {
-            Username = "admin",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123")
-        });
-        context.SaveChanges();
-    }
+      Username = "admin",
+      PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123")
+    });
+    context.SaveChanges();
+  }
 }
 
 app.MapControllers();
