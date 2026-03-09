@@ -1,50 +1,104 @@
 <section class="about-wrapper">
 
-  <div class="about-header">
+  <!-- HEADER -->
+  <div class="about-header reveal">
     <h1>About</h1>
-    <p>
-      Building structured systems while exploring creativity through code and writing.
-    </p>
+    <p>Building structured systems while exploring creativity through code and writing.</p>
   </div>
 
-  <!-- GRID SECTION -->
+  <!-- WHO I AM + SKILLS GRID -->
   <div class="about-grid">
-
-    <div class="about-text">
+    <div class="about-text reveal-left">
       <h2>Who I Am</h2>
       <p>
         I am a full-stack web developer focused on designing scalable web applications
         using ASP.NET Core and Angular.
       </p>
-
       <p>
         My work combines backend architecture, database design and clean frontend systems,
         while maintaining strong structure and clarity.
       </p>
     </div>
 
-    <div class="skills-card">
+    <div class="skills-card reveal-right">
       <h2>Core Skills</h2>
       <ul>
         <li>ASP.NET Core</li>
         <li>Angular</li>
         <li>SQL Server</li>
-        <li>HTML & CSS</li>
+        <li>HTML &amp; CSS</li>
+        <li>JavaScript</li>
+        <li>PostgreSQL</li>
       </ul>
     </div>
-
   </div>
 
   <!-- PROJECTS SECTION -->
   <div class="projects-section">
-    <h2>Projects</h2>
+    <h2 class="reveal">Projects</h2>
+    <div class="projects-grid">
 
-    <div class="project-card">
-      <h3>Portfolio CMS</h3>
-      <p>
-        A full-stack content management system built using ASP.NET Core and Angular,
-        featuring JWT authentication, dynamic data rendering and structured API design.
-      </p>
+      <div class="project-card reveal-scale">
+        <div class="project-top">
+          <div class="project-icon">🗂️</div>
+          <a class="project-link" href="https://portfolionlf.netlify.app" target="_blank" rel="noopener">
+            Visit ↗
+          </a>
+        </div>
+        <h3>Portfolio CMS</h3>
+        <p>
+          A full-stack content management system built using ASP.NET Core and Angular,
+          featuring JWT authentication, dynamic data rendering and structured API design.
+        </p>
+        <div class="tech-tags">
+          <span>ASP.NET Core</span>
+          <span>Angular</span>
+          <span>PostgreSQL</span>
+          <span>Railway</span>
+          <span>Netlify</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal-scale">
+        <div class="project-top">
+          <div class="project-icon">🌤️</div>
+          <a class="project-link" href="https://weather-programm.onrender.com/" target="_blank" rel="noopener">
+            Visit ↗
+          </a>
+        </div>
+        <h3>Weather Application</h3>
+        <p>
+          A responsive weather app that shows current conditions and forecasts
+          based on city, state, or coordinates.
+        </p>
+        <div class="tech-tags">
+          <span>Vite</span>
+          <span>React</span>
+          <span>OpenWeather API</span>
+          <span>Render</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal-scale">
+        <div class="project-top">
+          <div class="project-icon">⛰️</div>
+          <a class="project-link" href="https://parasnath.onrender.com/" target="_blank" rel="noopener">
+            Visit ↗
+          </a>
+        </div>
+        <h3>Jain Temples of Parasnath</h3>
+        <p>
+          A static website showcasing the beauty and spiritual significance of
+          Parasnath Hills with interactive elements.
+        </p>
+        <div class="tech-tags">
+          <span>HTML5</span>
+          <span>CSS3</span>
+          <span>JavaScript</span>
+          <span>Render</span>
+        </div>
+      </div>
+
     </div>
   </div>
 

@@ -19,18 +19,17 @@ export class App implements OnInit {
   darkMode = false;
   menuOpen = false;
   isAdminRoute = false;
+  currentYear = new Date().getFullYear();
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Restore saved theme
     const saved = localStorage.getItem('theme');
     if (saved === 'dark') {
       this.darkMode = true;
       document.body.classList.add('dark-mode');
     }
 
-    // Hide navbar and remove body padding on admin routes
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
@@ -39,17 +38,19 @@ export class App implements OnInit {
         document.body.classList.add('admin-route');
       } else {
         document.body.classList.remove('admin-route');
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+          this.initScrollReveal();
+        }, 150);
       }
     });
 
-    // Also check on first load (in case page refreshed on admin route)
-    const currentUrl = this.router.url;
-    if (currentUrl.startsWith('/admin')) {
+    if (this.router.url.startsWith('/admin')) {
       this.isAdminRoute = true;
       document.body.classList.add('admin-route');
     }
 
-    setTimeout(() => this.initScrollReveal(), 100);
+    setTimeout(() => this.initScrollReveal(), 200);
   }
 
   toggleTheme() {
@@ -80,6 +81,8 @@ export class App implements OnInit {
   }
 
   initScrollReveal() {
+    ScrollTrigger.getAll().forEach(t => t.kill());
+
     gsap.utils.toArray<HTMLElement>('.reveal').forEach(el => {
       gsap.fromTo(el,
         { opacity: 0, y: 40 },
@@ -87,11 +90,7 @@ export class App implements OnInit {
           opacity: 1, y: 0,
           duration: 0.7,
           ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
         }
       );
     });
@@ -103,11 +102,7 @@ export class App implements OnInit {
           opacity: 1, x: 0,
           duration: 0.7,
           ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
         }
       );
     });
@@ -119,27 +114,20 @@ export class App implements OnInit {
           opacity: 1, x: 0,
           duration: 0.7,
           ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
         }
       );
     });
 
-    gsap.utils.toArray<HTMLElement>('.reveal-scale').forEach(el => {
+    gsap.utils.toArray<HTMLElement>('.reveal-scale').forEach((el, i) => {
       gsap.fromTo(el,
         { opacity: 0, scale: 0.88 },
         {
           opacity: 1, scale: 1,
-          duration: 0.6,
+          duration: 0.55,
+          delay: i * 0.08,
           ease: 'back.out(1.4)',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
         }
       );
     });

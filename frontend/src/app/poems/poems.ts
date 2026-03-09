@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PoemService } from '../services/poem';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 @Component({
   selector: 'app-poems',
@@ -9,7 +10,7 @@ import { PoemService } from '../services/poem';
   templateUrl: './poems.html',
   styleUrls: ['./poems.scss']
 })
-export class Poems implements OnInit {
+export class Poems implements OnInit, AfterViewInit {
 
   poems: any[] = [];
   currentPage = 1;
@@ -27,6 +28,10 @@ export class Poems implements OnInit {
     this.loadPoems();
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => ScrollTrigger.refresh(), 150);
+  }
+
   loadPoems() {
     this.poemService.getPoems(this.currentPage, this.pageSize)
       .subscribe((response: any) => {
@@ -35,6 +40,7 @@ export class Poems implements OnInit {
         this.totalPages = Math.ceil(this.totalCount / this.pageSize) || 1;
         this.buildPageNumbers();
         this.cdr.detectChanges();
+        setTimeout(() => ScrollTrigger.refresh(), 100);
       });
   }
 
