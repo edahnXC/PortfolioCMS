@@ -1,6 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 @Component({
   selector: 'app-about',
@@ -12,6 +11,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 export class About implements AfterViewInit {
 
   ngAfterViewInit() {
-    setTimeout(() => ScrollTrigger.refresh(), 150);
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('data-loaded'));
+    }, 50);
   }
 }

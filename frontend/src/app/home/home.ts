@@ -3,7 +3,6 @@ import { CommonModule } from "@angular/common";
 import { PoemService } from "../services/poem";
 import { PhotoService } from '../services/photo';
 import { RouterModule } from '@angular/router';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +11,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
 })
-export class Home implements OnInit, AfterViewInit {
+export class Home implements OnInit {
 
   poems: any[] = [];
   photos: any[] = [];
@@ -47,15 +46,11 @@ export class Home implements OnInit, AfterViewInit {
       });
   }
 
-  ngAfterViewInit() {}
-
-  // Only run reveal once BOTH APIs have responded and DOM is updated
   private tryReveal() {
     if (!this.poemsLoaded || !this.photosLoaded) return;
+    // Give Angular one more tick to render the *ngFor items
     setTimeout(() => {
-      ScrollTrigger.refresh();
-      // Dispatch a custom event so app.ts re-runs initScrollReveal
       window.dispatchEvent(new CustomEvent('data-loaded'));
-    }, 100);
+    }, 80);
   }
 }

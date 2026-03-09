@@ -21,6 +21,8 @@ export class App implements OnInit {
   isAdminRoute = false;
   currentYear = new Date().getFullYear();
 
+  private revealDone = false;
+
   constructor(private router: Router) {}
 
   ngOnInit() {
@@ -34,15 +36,14 @@ export class App implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
+      this.revealDone = false;
 
-      // Always scroll to top on route change
       window.scrollTo({ top: 0, behavior: 'instant' });
 
       if (this.isAdminRoute) {
         document.body.classList.add('admin-route');
       } else {
         document.body.classList.remove('admin-route');
-        // Kill old triggers on route change — new ones fire after data loads
         ScrollTrigger.getAll().forEach(t => t.kill());
       }
     });
@@ -52,13 +53,20 @@ export class App implements OnInit {
       document.body.classList.add('admin-route');
     }
 
-    // Listen for data-loaded events from pages that fetch API data
+    // Pages with API data fire this after DOM is ready
     window.addEventListener('data-loaded', () => {
-      this.initScrollReveal();
+      if (this.revealDone) return;
+      this.revealDone = true;
+      setTimeout(() => this.initScrollReveal(), 50);
     });
 
-    // For static pages (about) that don't fire data-loaded
-    setTimeout(() => this.initScrollReveal(), 200);
+    // Static pages like About fire this immediately
+    setTimeout(() => {
+      if (!this.revealDone) {
+        this.revealDone = true;
+        this.initScrollReveal();
+      }
+    }, 300);
   }
 
   toggleTheme() {
@@ -89,70 +97,62 @@ export class App implements OnInit {
   }
 
   initScrollReveal() {
-    ScrollTrigger.getAll().forEach(t => t.kill());
+    // Animate elements already in viewport immediately (no scroll trigger)
+    // Animate elements below viewport when they scroll into view
 
-    gsap.utils.toArray<HTMLElement>('.reveal').forEach(el => {
-      gsap.fromTo(el,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1, y: 0,
-          duration: 0.7,
-          ease: 'power2.out',
+    const animateEl = (el: HTMLElement, fromVars: any, toVars: any, delay = 0) => {
+      const rect = el.getBoundingClientRect();
+      const inViewport = rect.top < window.innerHeight;
+
+      if (inViewport) {
+        // Already visible — animate in directly
+        gsap.fromTo(el, fromVars, {
+          ...toVars,
+          delay,
+          duration: toVars.duration ?? 0.7,
+          ease: toVars.ease ?? 'power2.out'
+        });
+      } else {
+        // Below fold — use ScrollTrigger
+        gsap.fromTo(el, fromVars, {
+          ...toVars,
+          delay,
+          duration: toVars.duration ?? 0.7,
+          ease: toVars.ease ?? 'power2.out',
           scrollTrigger: {
             trigger: el,
             start: 'top 88%',
             toggleActions: 'play none none none'
           }
-        }
-      );
+        });
+      }
+    };
+
+    gsap.utils.toArray<HTMLElement>('.reveal').forEach(el => {
+      animateEl(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0 });
     });
 
     gsap.utils.toArray<HTMLElement>('.reveal-left').forEach(el => {
-      gsap.fromTo(el,
-        { opacity: 0, x: -50 },
-        {
-          opacity: 1, x: 0,
-          duration: 0.7,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
+      animateEl(el, { opacity: 0, x: -50 }, { opacity: 1, x: 0 });
     });
 
     gsap.utils.toArray<HTMLElement>('.reveal-right').forEach(el => {
-      gsap.fromTo(el,
-        { opacity: 0, x: 50 },
-        {
-          opacity: 1, x: 0,
-          duration: 0.7,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
+      animateEl(el, { opacity: 0, x: 50 }, { opacity: 1, x: 0 });
     });
 
+    // reveal-scale — stagger for cards, smooth duration for gallery images
     gsap.utils.toArray<HTMLElement>('.reveal-scale').forEach((el, i) => {
-      gsap.fromTo(el,
-        { opacity: 0, scale: 0.88 },
+      const isGallery = el.closest('.masonry') !== null;
+      animateEl(
+        el,
+        { opacity: 0, scale: 0.92 },
         {
-          opacity: 1, scale: 1,
-          duration: 0.55,
-          delay: i * 0.08,
-          ease: 'back.out(1.4)',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
-        }
+          opacity: 1,
+          scale: 1,
+          duration: isGallery ? 0.9 : 0.55,
+          ease: isGallery ? 'power2.out' : 'back.out(1.4)'
+        },
+        isGallery ? i * 0.15 : i * 0.08
       );
     });
   }
