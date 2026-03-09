@@ -16,6 +16,7 @@ export class Dashboard implements OnInit {
 
   activeTab = 'overview';
   sidebarOpen = false;
+  adminDark = false;
 
   /* ── Stats ── */
   totalPoems = 0;
@@ -57,6 +58,11 @@ export class Dashboard implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Restore admin theme preference
+    const savedAdminTheme = localStorage.getItem('adminTheme');
+    if (savedAdminTheme === 'dark') {
+      this.adminDark = true;
+    }
     this.loadStats();
   }
 
@@ -81,6 +87,11 @@ export class Dashboard implements OnInit {
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/admin/login']);
+  }
+
+  toggleAdminTheme() {
+    this.adminDark = !this.adminDark;
+    localStorage.setItem('adminTheme', this.adminDark ? 'dark' : 'light');
   }
 
   /* ── Stats ── */

@@ -31,19 +31,23 @@ export class App implements OnInit {
     }
 
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
-      if (this.isAdminRoute) {
-        document.body.classList.add('admin-route');
-      } else {
-        document.body.classList.remove('admin-route');
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-          this.initScrollReveal();
-        }, 150);
-      }
-    });
+  filter(event => event instanceof NavigationEnd)
+).subscribe((event: any) => {
+  this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
+
+  // ✅ Always scroll to top on route change
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  if (this.isAdminRoute) {
+    document.body.classList.add('admin-route');
+  } else {
+    document.body.classList.remove('admin-route');
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+      this.initScrollReveal();
+    }, 150);
+  }
+});
 
     if (this.router.url.startsWith('/admin')) {
       this.isAdminRoute = true;

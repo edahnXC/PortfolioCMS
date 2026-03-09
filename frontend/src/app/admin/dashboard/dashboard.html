@@ -1,4 +1,4 @@
-<div class="admin-page">
+<div class="admin-page" [class.admin-dark]="adminDark">
 
   <!-- Sidebar -->
   <aside class="sidebar" [class.open]="sidebarOpen">
@@ -8,19 +8,19 @@
     </div>
 
     <nav class="sidebar-nav">
-      <a class="nav-item" [class.active]="activeTab === 'overview'"   (click)="setTab('overview')">
+      <a class="nav-item" [class.active]="activeTab === 'overview'"  (click)="setTab('overview')">
         <span class="nav-icon">📊</span> Overview
       </a>
-      <a class="nav-item" [class.active]="activeTab === 'poems'"      (click)="setTab('poems')">
+      <a class="nav-item" [class.active]="activeTab === 'poems'"     (click)="setTab('poems')">
         <span class="nav-icon">📝</span> Poems
       </a>
-      <a class="nav-item" [class.active]="activeTab === 'photos'"     (click)="setTab('photos')">
+      <a class="nav-item" [class.active]="activeTab === 'photos'"    (click)="setTab('photos')">
         <span class="nav-icon">🖼️</span> Photos
       </a>
-      <a class="nav-item" [class.active]="activeTab === 'add-poem'"   (click)="setTab('add-poem')">
+      <a class="nav-item" [class.active]="activeTab === 'add-poem'"  (click)="setTab('add-poem')">
         <span class="nav-icon">➕</span> Add Poem
       </a>
-      <a class="nav-item" [class.active]="activeTab === 'add-photo'"  (click)="setTab('add-photo')">
+      <a class="nav-item" [class.active]="activeTab === 'add-photo'" (click)="setTab('add-photo')">
         <span class="nav-icon">📸</span> Upload Photo
       </a>
     </nav>
@@ -41,6 +41,9 @@
       <button class="menu-btn" (click)="sidebarOpen = true">☰</button>
       <h1 class="page-title">{{ tabTitle }}</h1>
       <div class="topbar-right">
+        <button class="admin-theme-btn" (click)="toggleAdminTheme()" [title]="adminDark ? 'Switch to light' : 'Switch to dark'">
+          {{ adminDark ? '☀️' : '🌙' }}
+        </button>
         <a routerLink="/gallery" target="_blank" class="view-site-btn">View Site ↗</a>
       </div>
     </header>
@@ -92,8 +95,8 @@
               <span class="poem-row-meta">{{ poem.category }} · {{ poem.createdDate | date:'mediumDate' }}</span>
             </div>
             <div class="poem-row-actions">
-              <button class="icon-btn edit" (click)="startEditPoem(poem)" title="Edit">✏️</button>
-              <button class="icon-btn delete" (click)="deletePoem(poem.id)" title="Delete">🗑️</button>
+              <button class="icon-btn edit"   (click)="startEditPoem(poem)" title="Edit">✏️</button>
+              <button class="icon-btn delete" (click)="deletePoem(poem.id)"  title="Delete">🗑️</button>
             </div>
           </div>
 
@@ -111,7 +114,6 @@
         </div>
       </div>
 
-      <!-- Pagination -->
       <div class="pagination-bar" *ngIf="poemTotalPages > 1">
         <button class="pg-btn" (click)="loadPoems(poemPage - 1)" [disabled]="poemPage === 1">‹</button>
         <span class="pg-info">{{ poemPage }} / {{ poemTotalPages }}</span>
@@ -130,16 +132,14 @@
         <div class="photo-card" *ngFor="let photo of photos">
           <img [src]="photo.imagePath" [alt]="photo.title" />
 
-          <!-- View mode -->
           <div *ngIf="editingPhotoId !== photo.id" class="photo-card-footer">
             <span class="photo-title">{{ photo.title }}</span>
             <div class="photo-actions">
               <button class="icon-btn edit"   (click)="startEditPhoto(photo)" title="Edit">✏️</button>
-              <button class="icon-btn delete" (click)="deletePhoto(photo.id)" title="Delete">🗑️</button>
+              <button class="icon-btn delete" (click)="deletePhoto(photo.id)"  title="Delete">🗑️</button>
             </div>
           </div>
 
-          <!-- Edit mode -->
           <div *ngIf="editingPhotoId === photo.id" class="photo-edit-mode">
             <input [(ngModel)]="editPhotoTitle" placeholder="New title" class="edit-input" />
             <div class="edit-actions">
@@ -194,7 +194,7 @@
             <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
             <div *ngIf="!previewUrl" class="file-drop-placeholder">
               <span class="upload-icon">📁</span>
-              <p>Click to browse or drag & drop</p>
+              <p>Click to browse or drag &amp; drop</p>
               <small>JPG, PNG, WEBP supported</small>
             </div>
             <img *ngIf="previewUrl" [src]="previewUrl" class="preview-img" alt="Preview" />
