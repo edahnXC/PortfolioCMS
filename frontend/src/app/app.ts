@@ -31,29 +31,33 @@ export class App implements OnInit {
     }
 
     this.router.events.pipe(
-  filter(event => event instanceof NavigationEnd)
-).subscribe((event: any) => {
-  this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
 
-  // ✅ Always scroll to top on route change
-  window.scrollTo({ top: 0, behavior: 'instant' });
+      // Always scroll to top on route change
+      window.scrollTo({ top: 0, behavior: 'instant' });
 
-  if (this.isAdminRoute) {
-    document.body.classList.add('admin-route');
-  } else {
-    document.body.classList.remove('admin-route');
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-      this.initScrollReveal();
-    }, 150);
-  }
-});
+      if (this.isAdminRoute) {
+        document.body.classList.add('admin-route');
+      } else {
+        document.body.classList.remove('admin-route');
+        // Kill old triggers on route change — new ones fire after data loads
+        ScrollTrigger.getAll().forEach(t => t.kill());
+      }
+    });
 
     if (this.router.url.startsWith('/admin')) {
       this.isAdminRoute = true;
       document.body.classList.add('admin-route');
     }
 
+    // Listen for data-loaded events from pages that fetch API data
+    window.addEventListener('data-loaded', () => {
+      this.initScrollReveal();
+    });
+
+    // For static pages (about) that don't fire data-loaded
     setTimeout(() => this.initScrollReveal(), 200);
   }
 
@@ -94,7 +98,11 @@ export class App implements OnInit {
           opacity: 1, y: 0,
           duration: 0.7,
           ease: 'power2.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
         }
       );
     });
@@ -106,7 +114,11 @@ export class App implements OnInit {
           opacity: 1, x: 0,
           duration: 0.7,
           ease: 'power2.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
         }
       );
     });
@@ -118,7 +130,11 @@ export class App implements OnInit {
           opacity: 1, x: 0,
           duration: 0.7,
           ease: 'power2.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
         }
       );
     });
@@ -131,7 +147,11 @@ export class App implements OnInit {
           duration: 0.55,
           delay: i * 0.08,
           ease: 'back.out(1.4)',
-          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
         }
       );
     });
