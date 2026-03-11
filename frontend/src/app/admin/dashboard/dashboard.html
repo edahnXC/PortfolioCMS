@@ -3,7 +3,7 @@
   <!-- Sidebar -->
   <aside class="sidebar" [class.open]="sidebarOpen">
     <div class="sidebar-header">
-      <span class="sidebar-logo">Om <span>Admin</span></span>
+      <span class="sidebar-logo">Admin</span>
       <button class="sidebar-close" (click)="sidebarOpen = false">✕</button>
     </div>
 
@@ -44,7 +44,7 @@
         <button class="admin-theme-btn" (click)="toggleAdminTheme()" [title]="adminDark ? 'Switch to light' : 'Switch to dark'">
           {{ adminDark ? '☀️' : '🌙' }}
         </button>
-        <a routerLink="/gallery" target="_blank" class="view-site-btn">View Site ↗</a>
+        <a routerLink="/" target="_blank" class="view-site-btn">View Site ↗</a>
       </div>
     </header>
 
