@@ -361,12 +361,16 @@
 
   /* Lightbox: move arrows below image on mobile */
   .lightbox-panel {
-    flex-direction: column;
-    gap: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
     max-width: 95vw;
   }
 
   .lightbox-image-wrap {
+    order: 1;
+    width: 100%;
     border-radius: 12px;
 
     img {
@@ -376,6 +380,7 @@
   }
 
   .lb-arrow {
+    order: 2;
     width: 42px;
     height: 42px;
   }
