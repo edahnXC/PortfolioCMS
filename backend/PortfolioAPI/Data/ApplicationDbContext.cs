@@ -13,6 +13,7 @@ namespace PortfolioAPI.Data
     public DbSet<Poem> Poems { get; set; }
 
     public DbSet<Photo> Photos { get; set; }
+    public DbSet<Project> Projects { get; set; }
   }
 }
 

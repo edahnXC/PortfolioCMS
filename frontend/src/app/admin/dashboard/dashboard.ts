@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PoemService } from '../../services/poem';
 import { PhotoService } from '../../services/photo';
+import { ProjectService } from '../../services/project';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +22,7 @@ export class Dashboard implements OnInit {
   /* ── Stats ── */
   totalPoems = 0;
   totalPhotos = 0;
+  totalProjects = 0;
 
   /* ── Poems ── */
   poems: any[] = [];
@@ -50,10 +52,21 @@ export class Dashboard implements OnInit {
   uploadingPhoto = false;
   photoSuccess = false;
 
+  /* ── Projects ── */
+  projects: any[] = [];
+  editingProjectId: number | null = null;
+  editProject: any = {};
+
+  /* ── New project ── */
+  newProject = { name: '', description: '', link: '', icon: '🗂️', techTags: '', displayOrder: 0, createdDate: new Date() };
+  addingProject = false;
+  projectSuccess = false;
+
   constructor(
     private router: Router,
     private poemService: PoemService,
     private photoService: PhotoService,
+    private projectService: ProjectService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -68,11 +81,13 @@ export class Dashboard implements OnInit {
 
   get tabTitle(): string {
     const titles: Record<string, string> = {
-      'overview':  'Dashboard',
-      'poems':     'Manage Poems',
-      'photos':    'Manage Photos',
-      'add-poem':  'Add Poem',
-      'add-photo': 'Upload Photo'
+      'overview':    'Dashboard',
+      'poems':       'Manage Poems',
+      'photos':      'Manage Photos',
+      'projects':    'Manage Projects',
+      'add-poem':    'Add Poem',
+      'add-photo':   'Upload Photo',
+      'add-project': 'Add Project'
     };
     return titles[this.activeTab] ?? 'Dashboard';
   }
@@ -80,8 +95,9 @@ export class Dashboard implements OnInit {
   setTab(tab: string) {
     this.activeTab = tab;
     this.sidebarOpen = false;
-    if (tab === 'poems')  this.loadPoems(1);
-    if (tab === 'photos') this.loadPhotos(1);
+    if (tab === 'poems')    this.loadPoems(1);
+    if (tab === 'photos')   this.loadPhotos(1);
+    if (tab === 'projects') this.loadProjects();
   }
 
   logout() {
@@ -103,6 +119,10 @@ export class Dashboard implements OnInit {
     });
     this.photoService.getPhotos(1, 1).subscribe((r: any) => {
       this.totalPhotos = r.totalCount;
+      this.cdr.detectChanges();
+    });
+    this.projectService.getProjects().subscribe((r: any) => {
+      this.totalProjects = r.totalCount;
       this.cdr.detectChanges();
     });
   }
@@ -235,6 +255,58 @@ export class Dashboard implements OnInit {
       this.totalPhotos++;
       this.cdr.detectChanges();
       setTimeout(() => { this.photoSuccess = false; this.cdr.detectChanges(); }, 3000);
+    });
+  }
+
+  /* ── Projects ── */
+
+  loadProjects() {
+    this.projectService.getProjects().subscribe((r: any) => {
+      this.projects = r.data ?? [];
+      this.totalProjects = r.totalCount;
+      this.cdr.detectChanges();
+    });
+  }
+
+  startEditProject(project: any) {
+    this.editingProjectId = project.id;
+    this.editProject = { ...project };
+  }
+
+  cancelEditProject() {
+    this.editingProjectId = null;
+    this.editProject = {};
+  }
+
+  saveProject(id: number) {
+    this.projectService.updateProject(id, this.editProject).subscribe(() => {
+      this.editingProjectId = null;
+      this.loadProjects();
+    });
+  }
+
+  deleteProject(id: number) {
+    if (!confirm('Delete this project?')) return;
+    this.projectService.deleteProject(id).subscribe(() => {
+      this.loadProjects();
+      this.totalProjects--;
+      this.cdr.detectChanges();
+    });
+  }
+
+  addProject() {
+    if (!this.newProject.name || !this.newProject.description) return;
+    this.addingProject = true;
+    this.projectSuccess = false;
+    this.newProject.createdDate = new Date();
+
+    this.projectService.createProject(this.newProject).subscribe(() => {
+      this.addingProject = false;
+      this.projectSuccess = true;
+      this.newProject = { name: '', description: '', link: '', icon: '🗂️', techTags: '', displayOrder: 0, createdDate: new Date() };
+      this.totalProjects++;
+      this.cdr.detectChanges();
+      setTimeout(() => { this.projectSuccess = false; this.cdr.detectChanges(); }, 3000);
     });
   }
 }

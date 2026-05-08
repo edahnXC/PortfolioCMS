@@ -541,6 +541,26 @@
   }
 }
 
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.inline-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.78rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .field {
   display: flex;
   flex-direction: column;

@@ -221,3 +221,5 @@ F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.Extensions.L
 F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Npgsql.dll
 F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\CloudinaryDotNet.dll
+F:\PortfolioProject\backend\PortfolioAPI\bin\Debug\net8.0\Newtonsoft.Json.dll

@@ -17,11 +17,17 @@
       <a class="nav-item" [class.active]="activeTab === 'photos'"    (click)="setTab('photos')">
         <span class="nav-icon">🖼️</span> Photos
       </a>
+      <a class="nav-item" [class.active]="activeTab === 'projects'"  (click)="setTab('projects')">
+        <span class="nav-icon">🗂️</span> Projects
+      </a>
       <a class="nav-item" [class.active]="activeTab === 'add-poem'"  (click)="setTab('add-poem')">
         <span class="nav-icon">➕</span> Add Poem
       </a>
       <a class="nav-item" [class.active]="activeTab === 'add-photo'" (click)="setTab('add-photo')">
         <span class="nav-icon">📸</span> Upload Photo
+      </a>
+      <a class="nav-item" [class.active]="activeTab === 'add-project'" (click)="setTab('add-project')">
+        <span class="nav-icon">🚀</span> Add Project
       </a>
     </nav>
 
@@ -65,6 +71,13 @@
             <span class="stat-label">Total Photos</span>
           </div>
         </div>
+        <div class="stat-card">
+          <div class="stat-icon">🗂️</div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalProjects }}</span>
+            <span class="stat-label">Total Projects</span>
+          </div>
+        </div>
       </div>
 
       <div class="quick-actions">
@@ -72,8 +85,10 @@
         <div class="action-grid">
           <button class="action-btn" (click)="setTab('add-poem')">➕ Add Poem</button>
           <button class="action-btn" (click)="setTab('add-photo')">📸 Upload Photo</button>
+          <button class="action-btn" (click)="setTab('add-project')">🚀 Add Project</button>
           <button class="action-btn" (click)="setTab('poems')">📝 Manage Poems</button>
           <button class="action-btn" (click)="setTab('photos')">🖼️ Manage Photos</button>
+          <button class="action-btn" (click)="setTab('projects')">🗂️ Manage Projects</button>
         </div>
       </div>
     </section>
@@ -157,6 +172,49 @@
       </div>
     </section>
 
+    <!-- ── PROJECTS LIST ── -->
+    <section *ngIf="activeTab === 'projects'" class="tab-content">
+      <div class="list-header">
+        <span>{{ totalProjects }} projects total</span>
+        <button class="add-btn" (click)="setTab('add-project')">🚀 Add New</button>
+      </div>
+
+      <div class="poem-list">
+        <div class="poem-row" *ngFor="let project of projects">
+
+          <!-- View mode -->
+          <div *ngIf="editingProjectId !== project.id" class="poem-row-view">
+            <div class="poem-row-info">
+              <span class="poem-row-title">{{ project.icon }} {{ project.name }}</span>
+              <span class="poem-row-meta">
+                {{ project.techTags }}
+                <ng-container *ngIf="project.link"> · <a [href]="project.link" target="_blank" rel="noopener" class="inline-link">{{ project.link }}</a></ng-container>
+              </span>
+            </div>
+            <div class="poem-row-actions">
+              <button class="icon-btn edit"   (click)="startEditProject(project)" title="Edit">✏️</button>
+              <button class="icon-btn delete" (click)="deleteProject(project.id)" title="Delete">🗑️</button>
+            </div>
+          </div>
+
+          <!-- Edit mode -->
+          <div *ngIf="editingProjectId === project.id" class="poem-row-edit">
+            <input [(ngModel)]="editProject.name"         placeholder="Project name"  class="edit-input" />
+            <input [(ngModel)]="editProject.link"         placeholder="Project URL"   class="edit-input" />
+            <input [(ngModel)]="editProject.icon"         placeholder="Icon emoji"    class="edit-input" />
+            <input [(ngModel)]="editProject.techTags"     placeholder="Tags (comma-separated)" class="edit-input" />
+            <input [(ngModel)]="editProject.displayOrder" placeholder="Display order" class="edit-input" type="number" />
+            <textarea [(ngModel)]="editProject.description" placeholder="Description" class="edit-textarea"></textarea>
+            <div class="edit-actions">
+              <button class="save-btn"   (click)="saveProject(project.id)">Save</button>
+              <button class="cancel-btn" (click)="cancelEditProject()">Cancel</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- ── ADD POEM ── -->
     <section *ngIf="activeTab === 'add-poem'" class="tab-content">
       <div class="form-card">
@@ -206,6 +264,43 @@
           <span *ngIf="uploadingPhoto" class="spinner"></span>
         </button>
         <div class="success-msg" *ngIf="photoSuccess">✅ Photo uploaded successfully!</div>
+      </div>
+    </section>
+
+    <!-- ── ADD PROJECT ── -->
+    <section *ngIf="activeTab === 'add-project'" class="tab-content">
+      <div class="form-card">
+        <div class="field">
+          <label>Project Name</label>
+          <input type="text" [(ngModel)]="newProject.name" placeholder="e.g. Portfolio CMS" />
+        </div>
+        <div class="field">
+          <label>Project URL</label>
+          <input type="text" [(ngModel)]="newProject.link" placeholder="https://example.com" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Icon (emoji)</label>
+            <input type="text" [(ngModel)]="newProject.icon" placeholder="🗂️" />
+          </div>
+          <div class="field">
+            <label>Display Order</label>
+            <input type="number" [(ngModel)]="newProject.displayOrder" placeholder="0" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Tech Tags (comma-separated)</label>
+          <input type="text" [(ngModel)]="newProject.techTags" placeholder="Angular, ASP.NET Core, PostgreSQL" />
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <textarea [(ngModel)]="newProject.description" placeholder="Describe the project..." rows="5"></textarea>
+        </div>
+        <button class="submit-btn" (click)="addProject()" [disabled]="addingProject">
+          <span *ngIf="!addingProject">Add Project</span>
+          <span *ngIf="addingProject" class="spinner"></span>
+        </button>
+        <div class="success-msg" *ngIf="projectSuccess">✅ Project added successfully!</div>
       </div>
     </section>
 

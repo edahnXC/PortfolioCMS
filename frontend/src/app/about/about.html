@@ -33,69 +33,23 @@
     </div>
   </div>
 
-  <!-- PROJECTS SECTION -->
-  <div class="projects-section">
+  <!-- PROJECTS SECTION (dynamic from API) -->
+  <div class="projects-section" *ngIf="projects.length > 0">
     <h2 class="reveal">Projects</h2>
     <div class="projects-grid">
 
-      <div class="project-card reveal-scale">
+      <div class="project-card reveal-scale" *ngFor="let project of projects">
         <div class="project-top">
-          <div class="project-icon">🗂️</div>
-          <a class="project-link" href="https://portfolionlf.netlify.app" target="_blank" rel="noopener">
+          <div class="project-icon">{{ project.icon }}</div>
+          <a class="project-link" *ngIf="project.link"
+             [href]="project.link" target="_blank" rel="noopener">
             Visit ↗
           </a>
         </div>
-        <h3>Portfolio CMS</h3>
-        <p>
-          A full-stack content management system built using ASP.NET Core and Angular,
-          featuring JWT authentication, dynamic data rendering and structured API design.
-        </p>
-        <div class="tech-tags">
-          <span>ASP.NET Core</span>
-          <span>Angular</span>
-          <span>PostgreSQL</span>
-          <span>Railway</span>
-          <span>Netlify</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal-scale">
-        <div class="project-top">
-          <div class="project-icon">🌤️</div>
-          <a class="project-link" href="https://weather-programm.onrender.com/" target="_blank" rel="noopener">
-            Visit ↗
-          </a>
-        </div>
-        <h3>Weather Application</h3>
-        <p>
-          A responsive weather app that shows current conditions and forecasts
-          based on city, state, or coordinates.
-        </p>
-        <div class="tech-tags">
-          <span>Vite</span>
-          <span>React</span>
-          <span>OpenWeather API</span>
-          <span>Render</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal-scale">
-        <div class="project-top">
-          <div class="project-icon">⛰️</div>
-          <a class="project-link" href="https://parasnath.onrender.com/" target="_blank" rel="noopener">
-            Visit ↗
-          </a>
-        </div>
-        <h3>Jain Temples of Parasnath</h3>
-        <p>
-          A static website showcasing the beauty and spiritual significance of
-          Parasnath Hills with interactive elements.
-        </p>
-        <div class="tech-tags">
-          <span>HTML5</span>
-          <span>CSS3</span>
-          <span>JavaScript</span>
-          <span>Render</span>
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.description }}</p>
+        <div class="tech-tags" *ngIf="project.tags?.length">
+          <span *ngFor="let tag of project.tags">{{ tag }}</span>
         </div>
       </div>
 
