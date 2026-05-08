@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
@@ -14,14 +14,16 @@ gsap.registerPlugin(ScrollTrigger);
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnInit {
+export class App implements OnInit, OnDestroy {
 
   darkMode = false;
   menuOpen = false;
   isAdminRoute = false;
+  isScrolled = false;
   currentYear = new Date().getFullYear();
 
   private revealDone = false;
+  private dataLoadedHandler = () => this.onDataLoaded();
 
   constructor(private router: Router) {}
 
@@ -54,11 +56,7 @@ export class App implements OnInit {
     }
 
     // Pages with API data fire this after DOM is ready
-    window.addEventListener('data-loaded', () => {
-      if (this.revealDone) return;
-      this.revealDone = true;
-      setTimeout(() => this.initScrollReveal(), 50);
-    });
+    window.addEventListener('data-loaded', this.dataLoadedHandler);
 
     // Static pages like About fire this immediately
     setTimeout(() => {
@@ -67,6 +65,24 @@ export class App implements OnInit {
         this.initScrollReveal();
       }
     }, 300);
+
+    // Set initial scroll state
+    this.checkScroll();
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('data-loaded', this.dataLoadedHandler);
+  }
+
+  private onDataLoaded() {
+    if (this.revealDone) return;
+    this.revealDone = true;
+    setTimeout(() => this.initScrollReveal(), 50);
+  }
+
+  @HostListener('window:scroll')
+  checkScroll() {
+    this.isScrolled = window.scrollY > 30;
   }
 
   toggleTheme() {
@@ -97,47 +113,42 @@ export class App implements OnInit {
   }
 
   initScrollReveal() {
-    // Animate elements already in viewport immediately (no scroll trigger)
-    // Animate elements below viewport when they scroll into view
-
     const animateEl = (el: HTMLElement, fromVars: any, toVars: any, delay = 0) => {
       const rect = el.getBoundingClientRect();
       const inViewport = rect.top < window.innerHeight;
 
       if (inViewport) {
-        // Already visible — animate in directly
         gsap.fromTo(el, fromVars, {
           ...toVars,
           delay,
-          duration: toVars.duration ?? 0.7,
-          ease: toVars.ease ?? 'power2.out'
+          duration: toVars.duration ?? 0.8,
+          ease: toVars.ease ?? 'power3.out'
         });
       } else {
-        // Below fold — use ScrollTrigger
         gsap.fromTo(el, fromVars, {
           ...toVars,
           delay,
-          duration: toVars.duration ?? 0.7,
-          ease: toVars.ease ?? 'power2.out',
+          duration: toVars.duration ?? 0.8,
+          ease: toVars.ease ?? 'power3.out',
           scrollTrigger: {
             trigger: el,
-            start: 'top 88%',
+            start: 'top 90%',
             toggleActions: 'play none none none'
           }
         });
       }
     };
 
-    gsap.utils.toArray<HTMLElement>('.reveal').forEach(el => {
-      animateEl(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0 });
+    gsap.utils.toArray<HTMLElement>('.reveal').forEach((el, i) => {
+      animateEl(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, i * 0.06);
     });
 
     gsap.utils.toArray<HTMLElement>('.reveal-left').forEach(el => {
-      animateEl(el, { opacity: 0, x: -50 }, { opacity: 1, x: 0 });
+      animateEl(el, { opacity: 0, x: -40 }, { opacity: 1, x: 0 });
     });
 
     gsap.utils.toArray<HTMLElement>('.reveal-right').forEach(el => {
-      animateEl(el, { opacity: 0, x: 50 }, { opacity: 1, x: 0 });
+      animateEl(el, { opacity: 0, x: 40 }, { opacity: 1, x: 0 });
     });
 
     // reveal-scale — stagger for cards, smooth duration for gallery images
@@ -149,10 +160,10 @@ export class App implements OnInit {
         {
           opacity: 1,
           scale: 1,
-          duration: isGallery ? 0.9 : 0.55,
-          ease: isGallery ? 'power2.out' : 'back.out(1.4)'
+          duration: isGallery ? 1 : 0.6,
+          ease: isGallery ? 'power3.out' : 'back.out(1.2)'
         },
-        isGallery ? i * 0.15 : i * 0.08
+        isGallery ? i * 0.12 : i * 0.07
       );
     });
   }

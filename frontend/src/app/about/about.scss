@@ -1,51 +1,65 @@
 .about-wrapper {
   background: var(--bg-primary);
-  padding: 100px 80px;
+  padding: 80px 80px 60px;
   max-width: 1200px;
   margin: auto;
 }
 
 .about-header h1 {
-  font-size: 48px;
+  font-size: clamp(32px, 5vw, 48px);
   margin-bottom: 10px;
   color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .about-header p {
   color: var(--text-secondary);
-  margin-bottom: 60px;
+  margin-bottom: 56px;
   font-size: 1.05rem;
+  line-height: 1.6;
 }
 
 .about-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 60px;
+  gap: 50px;
   align-items: start;
 }
 
 .about-text h2 {
   margin-bottom: 20px;
   color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.4rem;
 }
 
 .about-text p {
   margin-bottom: 20px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--text-primary);
+  font-size: 0.95rem;
 }
 
 .skills-card {
   background: var(--card-bg);
-  padding: 30px;
+  padding: 28px;
   border-radius: 16px;
   border: 1px solid var(--card-border);
   color: var(--text-primary);
+  transition: box-shadow 0.3s ease,
+              border-color 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    border-color: rgba(var(--accent-rgb), 0.2);
+  }
 }
 
 .skills-card h2 {
   margin-bottom: 20px;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .skills-card ul {
@@ -54,38 +68,45 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .skills-card ul li {
   padding: 10px 14px;
   background: var(--bg-primary);
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
   font-weight: 500;
   border: 1px solid var(--card-border);
   color: var(--text-primary);
-  transition: border-color 0.2s, color 0.2s;
+  transition: border-color 0.25s ease,
+              color 0.25s ease,
+              background 0.25s ease,
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 
   &:hover {
     border-color: var(--accent);
     color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.04);
+    transform: translateX(4px);
   }
 }
 
 .projects-section {
-  margin-top: 90px;
+  margin-top: 80px;
 
   h2 {
-    font-size: 2rem;
-    margin-bottom: 40px;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 36px;
     color: var(--text-primary);
+    font-weight: 700;
   }
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 24px;
 }
 
@@ -97,12 +118,15 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  will-change: transform;
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.09);
-    border-color: var(--accent);
+    border-color: rgba(var(--accent-rgb), 0.4);
   }
 }
 
@@ -123,13 +147,17 @@
   font-weight: 600;
   color: var(--accent);
   border: 1px solid var(--accent);
-  padding: 5px 12px;
+  padding: 5px 14px;
   border-radius: 20px;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.25s ease,
+              color 0.25s ease,
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 
   &:hover {
     background: var(--accent);
     color: #fff;
+    transform: translateY(-1px);
   }
 }
 
@@ -141,9 +169,9 @@
 }
 
 .project-card p {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
-  line-height: 1.65;
+  line-height: 1.7;
   margin: 0;
   flex: 1;
 }
@@ -155,16 +183,19 @@
   margin-top: 4px;
 
   span {
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     font-weight: 500;
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
-    background: rgba(59, 130, 246, 0.08);
+    background: rgba(var(--accent-rgb), 0.08);
     color: var(--accent);
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    transition: background 0.2s ease,
+                border-color 0.2s ease;
   }
 }
 
+/* ── Responsive ── */
 @media (max-width: 900px) {
   .about-wrapper {
     padding: 60px 30px;
@@ -172,7 +203,7 @@
 
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 36px;
   }
 
   .about-header h1 {
@@ -185,7 +216,40 @@
     padding: 40px 20px;
   }
 
+  .about-header h1 {
+    font-size: 28px;
+  }
+
+  .about-header p {
+    margin-bottom: 36px;
+    font-size: 0.95rem;
+  }
+
+  .projects-section {
+    margin-top: 56px;
+  }
+
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .project-card {
+    padding: 22px;
+    border-radius: 14px;
+  }
+
+  .skills-card {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-wrapper {
+    padding: 32px 14px;
+  }
+
+  .project-card {
+    padding: 18px;
   }
 }

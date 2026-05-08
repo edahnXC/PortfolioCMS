@@ -6,6 +6,7 @@
 
 :root {
   --accent:        #3b82f6;
+  --accent-rgb:    59, 130, 246;
   --bg-primary:    #f8fafc;
   --bg-secondary:  #ffffff;
   --text-primary:  #0f172a;
@@ -13,6 +14,12 @@
   --card-bg:       #ffffff;
   --card-border:   #e2e8f0;
   --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md:     0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg:     0 12px 40px rgba(0,0,0,0.12);
+  --transition-fast:  0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:  0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ============================= */
@@ -27,19 +34,48 @@ body.dark-mode {
   --card-bg:       #1e293b;
   --card-border:   #334155;
   --accent:        #60a5fa;
+  --accent-rgb:    96, 165, 250;
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md:     0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg:     0 12px 40px rgba(0,0,0,0.4);
 }
 
 /* ============================= */
-/* GLOBAL BODY                   */
+/* GLOBAL RESET & BODY           */
 /* ============================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  padding-top: 90px;
+  padding-top: 80px;
   background: var(--bg-primary);
   color: var(--text-primary);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background var(--transition-base), color var(--transition-base);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+::selection {
+  background: rgba(var(--accent-rgb), 0.25);
+  color: var(--text-primary);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* ============================= */
@@ -62,6 +98,7 @@ body {
 /* ============================= */
 
 button {
+  font-family: 'Poppins', sans-serif;
   background: var(--accent);
   color: white;
   border: none;
@@ -69,23 +106,40 @@ button {
   padding: 12px 28px;
   font-size: 15px;
   cursor: pointer;
-  transition: 0.25s;
+  transition: transform var(--transition-fast),
+              box-shadow var(--transition-fast),
+              background var(--transition-fast);
+  will-change: transform;
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.2);
 }
 
 /* ============================= */
-/* SCROLL REVEAL BASE CLASS      */
-/* (GSAP sets opacity/transform) */
+/* SCROLL REVEAL BASE CLASSES    */
+/* GPU-accelerated, won't fight  */
+/* with hover transforms         */
 /* ============================= */
+
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
 
 .reveal {
   opacity: 0;
   transform: translateY(40px);
-  /* GSAP will animate these to opacity:1, translateY:0 */
 }
 
 .reveal-left {
@@ -104,15 +158,56 @@ button:hover {
 }
 
 /* ============================= */
+/* PREFERS REDUCED MOTION        */
+/* ============================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ============================= */
 /* RESPONSIVE                    */
 /* ============================= */
 
 @media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+  }
+
   .preview-section {
     padding: 60px 24px;
   }
 
   .preview-section h2 {
     font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 64px;
+  }
+
+  .preview-section {
+    padding: 40px 16px;
+  }
+
+  .preview-section h2 {
+    font-size: 22px;
   }
 }

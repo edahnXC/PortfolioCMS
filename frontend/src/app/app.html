@@ -1,7 +1,7 @@
 <!-- Navbar — hidden on all /admin routes -->
 <ng-container *ngIf="!isAdminRoute">
 
-  <nav class="navbar">
+  <nav class="navbar" [class.scrolled]="isScrolled">
     <a class="logo" routerLink="/">Om's <span>Portfolio</span></a>
 
     <div class="nav-right">
