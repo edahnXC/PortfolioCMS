@@ -57,12 +57,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(rawConn));
 
 // ── Cloudinary ──
-var cloudName = builder.Configuration["Cloudinary__CloudName"]
-                ?? Environment.GetEnvironmentVariable("Cloudinary__CloudName") ?? "";
-var apiKey = builder.Configuration["Cloudinary__ApiKey"]
-             ?? Environment.GetEnvironmentVariable("Cloudinary__ApiKey") ?? "";
-var apiSecret = builder.Configuration["Cloudinary__ApiSecret"]
-                ?? Environment.GetEnvironmentVariable("Cloudinary__ApiSecret") ?? "";
+var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME") ?? "";
+var apiKey    = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY") ?? "";
+var apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET") ?? "";
 
 var cloudinaryAccount = new Account(cloudName, apiKey, apiSecret);
 builder.Services.AddSingleton(new Cloudinary(cloudinaryAccount));
@@ -92,10 +89,6 @@ builder.Services.AddCors(options =>
 {
   options.AddPolicy("AllowAngular", policy =>
   {
-    //policy.WithOrigins(
-    //    "http://localhost:4200",
-    //    "https://portfolionlf.netlify.app"
-    //)
     policy.AllowAnyOrigin()
     .AllowAnyHeader()
     .AllowAnyMethod();
