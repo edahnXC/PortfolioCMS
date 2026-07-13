@@ -11,7 +11,7 @@ class="carousel-card"
 *ngFor="let photo of carouselPhotos;let i=index"
 [ngStyle]="getCardStyle(i)">
 
-<img [src]="'https://localhost:7076/'+photo.imagePath">
+<img [src]="'https://localhost:7076/'+photo.imagePath" loading="lazy">
 
 </div>
 

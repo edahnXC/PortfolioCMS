@@ -145,7 +145,7 @@
 
       <div class="photo-grid">
         <div class="photo-card" *ngFor="let photo of photos">
-          <img [src]="photo.imagePath" [alt]="photo.title" />
+          <img [src]="photo.imagePath" [alt]="photo.title" loading="lazy" />
 
           <div *ngIf="editingPhotoId !== photo.id" class="photo-card-footer">
             <span class="photo-title">{{ photo.title }}</span>
@@ -255,7 +255,7 @@
               <p>Click to browse or drag &amp; drop</p>
               <small>JPG, PNG, WEBP supported</small>
             </div>
-            <img *ngIf="previewUrl" [src]="previewUrl" class="preview-img" alt="Preview" />
+            <img *ngIf="previewUrl" [src]="previewUrl" class="preview-img" alt="Preview" loading="lazy" />
           </div>
         </div>
 

@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'about', component: About },
 
   // ADMIN ROUTES
-  { path: 'admin/login', component: Login },
+  { path: 'manage/portal-login', component: Login },
 
   { path: 'admin/dashboard',
     component: Dashboard,

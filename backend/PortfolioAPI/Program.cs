@@ -127,10 +127,12 @@ using (var scope = app.Services.CreateScope())
   var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
   if (!context.Admins.Any())
   {
+    var adminUsername = Environment.GetEnvironmentVariable("ADMIN_USERNAME") ?? "admin";
+    var adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD") ?? "admin123";
     context.Admins.Add(new Admin
     {
-      Username = "admin",
-      PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123")
+      Username = adminUsername,
+      PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword)
     });
     context.SaveChanges();
   }

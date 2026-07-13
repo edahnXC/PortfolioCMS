@@ -102,7 +102,7 @@ export class Dashboard implements OnInit {
 
   logout() {
     localStorage.removeItem('token');
-    this.router.navigate(['/admin/login']);
+    this.router.navigate(['/manage/portal-login']);
   }
 
   toggleAdminTheme() {

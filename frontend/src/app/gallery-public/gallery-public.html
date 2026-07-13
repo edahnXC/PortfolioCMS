@@ -18,6 +18,7 @@
           <img
             [src]="photo.imagePath"
             [alt]="photo.title"
+            loading="lazy"
             draggable="false" />
           <div class="card-label">{{ photo.title }}</div>
         </div>
@@ -78,7 +79,7 @@
     <div class="lightbox-image-wrap">
       <img
         [src]="activePhoto.imagePath"
-        [alt]="activePhoto.title" />
+        [alt]="activePhoto.title" loading="lazy" />
       <div class="lightbox-caption">{{ activePhoto.title }}</div>
     </div>
 

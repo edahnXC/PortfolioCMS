@@ -7,9 +7,19 @@ export const authGuard: CanActivateFn = () => {
   const token = localStorage.getItem('token');
 
   if (token) {
-    return true;
-  } else {
-    router.navigate(['/admin/login']);
-    return false;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const isExpired = payload.exp * 1000 < Date.now();
+      
+      if (!isExpired) {
+        return true;
+      }
+    } catch (e) {
+      // Invalid token format
+    }
   }
+  
+  localStorage.removeItem('token');
+  router.navigate(['/manage/portal-login']);
+  return false;
 };
