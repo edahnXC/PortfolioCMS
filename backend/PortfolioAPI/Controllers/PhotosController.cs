@@ -71,7 +71,7 @@ namespace PortfolioAPI.Controllers
       var photo = new Photo
       {
         Title = title,
-        ImagePath = uploadResult.SecureUrl.ToString(),
+        ImagePath = uploadResult.SecureUrl.ToString().Replace("/upload/", "/upload/q_auto,f_auto/"),
         UploadedDate = DateTime.UtcNow
       };
 

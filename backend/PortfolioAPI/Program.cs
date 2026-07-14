@@ -61,7 +61,11 @@ var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME") ?? "
 var apiKey    = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY") ?? "";
 var apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET") ?? "";
 
-var cloudinaryAccount = new Account(cloudName, apiKey, apiSecret);
+var cloudinaryAccount = new Account(
+    string.IsNullOrEmpty(cloudName) ? "dummy" : cloudName,
+    string.IsNullOrEmpty(apiKey) ? "dummy" : apiKey,
+    string.IsNullOrEmpty(apiSecret) ? "dummy" : apiSecret
+);
 builder.Services.AddSingleton(new Cloudinary(cloudinaryAccount));
 
 // ── JWT ──

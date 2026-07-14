@@ -309,4 +309,55 @@ export class Dashboard implements OnInit {
       setTimeout(() => { this.projectSuccess = false; this.cdr.detectChanges(); }, 3000);
     });
   }
+
+  /* ── Experiences ── */
+
+  loadExperiences() {
+    this.experienceService.getExperiences().subscribe((r: any) => {
+      this.experiences = r.data ?? [];
+      this.totalExperiences = r.totalCount;
+      this.cdr.detectChanges();
+    });
+  }
+
+  startEditExperience(experience: any) {
+    this.editingExperienceId = experience.id;
+    this.editExperience = { ...experience };
+  }
+
+  cancelEditExperience() {
+    this.editingExperienceId = null;
+    this.editExperience = {};
+  }
+
+  saveExperience(id: number) {
+    this.experienceService.updateExperience(id, this.editExperience).subscribe(() => {
+      this.editingExperienceId = null;
+      this.loadExperiences();
+    });
+  }
+
+  deleteExperience(id: number) {
+    if (!confirm('Delete this experience?')) return;
+    this.experienceService.deleteExperience(id).subscribe(() => {
+      this.loadExperiences();
+      this.totalExperiences--;
+      this.cdr.detectChanges();
+    });
+  }
+
+  addExperience() {
+    if (!this.newExperience.title || !this.newExperience.dateRange) return;
+    this.addingExperience = true;
+    this.experienceSuccess = false;
+
+    this.experienceService.createExperience(this.newExperience).subscribe(() => {
+      this.addingExperience = false;
+      this.experienceSuccess = true;
+      this.newExperience = { type: '', title: '', dateRange: '', companyOrInstitution: '', description: '' };
+      this.totalExperiences++;
+      this.cdr.detectChanges();
+      setTimeout(() => { this.experienceSuccess = false; this.cdr.detectChanges(); }, 3000);
+    });
+  }
 }

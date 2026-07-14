@@ -14,6 +14,7 @@ namespace PortfolioAPI.Data
 
     public DbSet<Photo> Photos { get; set; }
     public DbSet<Project> Projects { get; set; }
+    public DbSet<Experience> Experiences { get; set; }
   }
 }
 
