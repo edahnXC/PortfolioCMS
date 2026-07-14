@@ -158,7 +158,7 @@
 
       <div class="photo-grid">
         <div class="photo-card" *ngFor="let photo of photos">
-          <img [src]="photo.imagePath" [alt]="photo.title" loading="lazy" />
+          <img [src]="photo.imagePath" alt="{{ photo.title || 'Uploaded photo' }}" loading="lazy" />
 
           <div *ngIf="editingPhotoId !== photo.id" class="photo-card-footer">
             <span class="photo-title">{{ photo.title }}</span>

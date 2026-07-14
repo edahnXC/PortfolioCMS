@@ -9,8 +9,8 @@
       I specialize in Angular, ASP.NET Core, and modern web architectures.
     </p>
     <div class="hero-actions reveal">
-      <a href="https://github.com/edahnXC" target="_blank" class="btn-primary">View GitHub</a>
-      <a href="https://www.linkedin.com/in/omkrai19" target="_blank" class="btn-secondary">LinkedIn</a>
+      <a href="https://github.com/edahnXC" target="_blank" rel="noopener noreferrer" class="btn-primary">View GitHub</a>
+      <a href="https://www.linkedin.com/in/omkrai19" target="_blank" rel="noopener noreferrer" class="btn-secondary">LinkedIn</a>
     </div>
   </div>
 </section>
@@ -42,7 +42,7 @@
       <div class="project-tags">
         <span class="tag" *ngFor="let tag of proj.techTags.split(',')">{{ tag.trim() }}</span>
       </div>
-      <a *ngIf="proj.link" [href]="proj.link" target="_blank" class="project-link">View Project →</a>
+      <a *ngIf="proj.link" [href]="proj.link" target="_blank" rel="noopener noreferrer" class="project-link">View Project →</a>
     </div>
   </div>
 </section>
@@ -57,7 +57,7 @@
     <div class="hobby-card card-glass reveal-scale">
       <h3>🖼️ Photography</h3>
       <div class="hobby-images">
-        <img *ngFor="let img of photos.slice(0,3)" [src]="img.imagePath" loading="lazy" />
+        <img *ngFor="let img of photos.slice(0,3)" [src]="img.imagePath" alt="Photography snapshot" loading="lazy" />
       </div>
       <button routerLink="/gallery" class="hobby-btn">Explore Gallery</button>
     </div>
