@@ -1,7 +1,9 @@
-import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { PoemService } from "../services/poem";
 import { PhotoService } from '../services/photo';
+import { ProjectService } from '../services/project';
+import { ExperienceService } from '../services/experience';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -15,40 +17,51 @@ export class Home implements OnInit {
 
   poems: any[] = [];
   photos: any[] = [];
-  heroImages: string[] = [];
+  projects: any[] = [];
+  experiences: any[] = [];
 
   private poemsLoaded = false;
   private photosLoaded = false;
+  private projectsLoaded = false;
+  private experiencesLoaded = false;
 
   constructor(
     private poemService: PoemService,
     private photoService: PhotoService,
+    private projectService: ProjectService,
+    private experienceService: ExperienceService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.poemService.getPoems(1, 2)
-      .subscribe((response: { data: any[]; totalCount: number }) => {
-        this.poems = response.data ?? [];
-        this.poemsLoaded = true;
-        this.cdr.detectChanges();
-        this.tryReveal();
-      });
+    this.poemService.getPoems(1, 2).subscribe((res: any) => {
+      this.poems = res.data ?? [];
+      this.poemsLoaded = true;
+      this.tryReveal();
+    });
 
-    this.photoService.getPhotos(1, 20)
-      .subscribe((response: { data: any[]; totalCount: number }) => {
-        this.photos = response.data ?? [];
-        const shuffled = [...response.data].sort(() => 0.5 - Math.random());
-        this.heroImages = shuffled.slice(0, 3).map(p => p.imagePath);
-        this.photosLoaded = true;
-        this.cdr.detectChanges();
-        this.tryReveal();
-      });
+    this.photoService.getPhotos(1, 6).subscribe((res: any) => {
+      this.photos = res.data ?? [];
+      this.photosLoaded = true;
+      this.tryReveal();
+    });
+
+    this.projectService.getProjects().subscribe((res: any) => {
+      this.projects = res.data ?? [];
+      this.projectsLoaded = true;
+      this.tryReveal();
+    });
+
+    this.experienceService.getExperiences().subscribe((res: any) => {
+      this.experiences = res.data ?? [];
+      this.experiencesLoaded = true;
+      this.tryReveal();
+    });
   }
 
   private tryReveal() {
-    if (!this.poemsLoaded || !this.photosLoaded) return;
-    // Give Angular one more tick to render the *ngFor items
+    if (!this.poemsLoaded || !this.photosLoaded || !this.projectsLoaded || !this.experiencesLoaded) return;
+    this.cdr.detectChanges();
     setTimeout(() => {
       window.dispatchEvent(new CustomEvent('data-loaded'));
     }, 80);

@@ -1,19 +1,26 @@
 /* ============================= */
-/* HERO TEXT SECTION              */
+/* HERO TEXT SECTION             */
 /* ============================= */
 
 .hero-intro {
   text-align: center;
-  padding: 80px 24px 48px;
+  padding: 120px 24px 60px;
   max-width: 900px;
   margin: auto;
+  position: relative;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
 }
 
 .hero-intro h1 {
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(40px, 6vw, 64px);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1;
   letter-spacing: -0.02em;
+  margin-bottom: 24px;
 }
 
 .hero-intro h1 span {
@@ -25,186 +32,299 @@
 }
 
 .hero-intro p {
-  margin-top: 16px;
-  font-size: clamp(15px, 2.5vw, 18px);
+  font-size: clamp(16px, 2.5vw, 20px);
   color: var(--text-secondary);
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.7;
-}
-
-/* ============================= */
-/* HERO MASONRY GALLERY          */
-/* ============================= */
-
-.hero-gallery {
-  padding: 0 24px;
-  max-width: 1000px;
   margin: 0 auto 40px;
-}
-
-.masonry {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.masonry-image {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 14px;
-  position: relative;
-  aspect-ratio: 4/5;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
-  }
-
-  &:hover img {
-    transform: scale(1.05);
-  }
-
-  /* Optional: first image larger */
-  &:first-child {
-    grid-row: span 1;
-  }
-}
-
-/* ============================= */
-/* SECTION LAYOUT                */
-/* ============================= */
-
-.preview-section {
-  padding: 80px 24px;
-  max-width: 900px;
-  margin: auto;
-  text-align: center;
-}
-
-.preview-section h2 {
-  font-size: clamp(24px, 4vw, 34px);
-  margin-bottom: 40px;
-  font-weight: 700;
-}
-
-/* ============================= */
-/* POEM CARDS                    */
-/* ============================= */
-
-.poem-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  padding: 24px;
-  border-radius: 14px;
-  margin-bottom: 20px;
-  text-align: left;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.3s ease,
-              border-color 0.3s ease;
-  will-change: transform;
-}
-
-.poem-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-  border-color: rgba(var(--accent-rgb), 0.3);
-}
-
-.poem-card h3 {
-  margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.poem-card p {
-  color: var(--text-secondary);
   line-height: 1.7;
 }
 
-/* ============================= */
-/* BUTTON STYLE                  */
-/* ============================= */
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
 
-:host button {
-  margin-top: 30px;
+.hero-actions a {
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-primary {
   background: var(--accent);
   color: white;
-  border: none;
-  border-radius: 25px;
-  padding: 12px 28px;
-  font-size: 15px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.25s ease;
-  will-change: transform;
 }
 
-:host button:hover {
+.btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.3);
 }
 
-:host button:active {
-  transform: translateY(0);
+.btn-secondary {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  background: rgba(var(--accent-rgb), 0.05);
+  border-color: var(--accent);
+}
+
+/* ============================= */
+/* GLOBAL SECTION LAYOUT         */
+/* ============================= */
+
+.preview-section {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.preview-section h2 {
+  font-size: clamp(28px, 4vw, 36px);
+  margin-bottom: 40px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.card-glass {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 24px;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.card-glass:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(var(--accent-rgb), 0.3);
+}
+
+/* ============================= */
+/* TIMELINE SECTION              */
+/* ============================= */
+
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-left: 24px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--card-border);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -29px;
+  top: 24px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg-primary);
+}
+
+.timeline-content {
+  margin-left: 16px;
+}
+
+.timeline-date {
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.timeline-content h3 {
+  margin: 0 0 4px;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.timeline-company {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.timeline-content p {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* ============================= */
+/* PROJECTS SECTION              */
+/* ============================= */
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-icon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.project-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+}
+
+.project-card p {
+  color: var(--text-secondary);
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.project-tags .tag {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.project-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: opacity var(--transition-fast);
+}
+
+.project-link:hover {
+  opacity: 0.8;
+}
+
+/* ============================= */
+/* HOBBIES SECTION               */
+/* ============================= */
+
+.hobbies-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-top: -24px;
+  margin-bottom: 40px;
+}
+
+.hobbies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.hobby-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.hobby-card h3 {
+  margin: 0 0 20px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.hobby-images {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.hobby-images img {
+  width: calc(33.333% - 5.33px);
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.hobby-poems {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.mini-poem h4 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.mini-poem p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.hobby-btn {
+  width: 100%;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.hobby-btn:hover {
+  background: rgba(var(--accent-rgb), 0.2);
 }
 
 /* ============================= */
 /* RESPONSIVE DESIGN             */
 /* ============================= */
 
-@media (max-width: 900px) {
-  .masonry {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .hero-intro h1 {
-    font-size: 34px;
-  }
-}
-
 @media (max-width: 600px) {
-  .masonry {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  .masonry-image {
-    aspect-ratio: 3/4;
-  }
-
-  /* Hide the third image on very small screens */
-  .masonry-image:nth-child(3) {
-    display: none;
-  }
-
   .hero-intro {
-    padding: 48px 16px 32px;
+    padding: 80px 16px 40px;
   }
-
+  .timeline {
+    padding-left: 16px;
+  }
+  .timeline-dot {
+    left: -21px;
+  }
   .preview-section {
-    padding: 48px 16px;
-  }
-
-  .poem-card {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 380px) {
-  .masonry {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .masonry-image:nth-child(3) {
-    display: block;
+    padding: 40px 16px;
   }
 }

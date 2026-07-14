@@ -16,7 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 })
 export class App implements OnInit, OnDestroy {
 
-  darkMode = false;
+  darkMode = true;
   menuOpen = false;
   isAdminRoute = false;
   isScrolled = false;
@@ -29,9 +29,12 @@ export class App implements OnInit, OnDestroy {
 
   ngOnInit() {
     const saved = localStorage.getItem('theme');
-    if (saved === 'dark') {
+    if (saved === 'light') {
+      this.darkMode = false;
+      document.body.classList.add('light-mode');
+    } else {
       this.darkMode = true;
-      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
     }
 
     this.router.events.pipe(
@@ -87,7 +90,7 @@ export class App implements OnInit, OnDestroy {
 
   toggleTheme() {
     this.darkMode = !this.darkMode;
-    document.body.classList.toggle('dark-mode', this.darkMode);
+    document.body.classList.toggle('light-mode', !this.darkMode);
     localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
   }
 

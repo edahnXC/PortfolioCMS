@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 60px;
-  background: rgba(248, 250, 252, 0.8);
+  background: rgba(2, 6, 23, 0.75);
   backdrop-filter: blur(16px) saturate(1.8);
   -webkit-backdrop-filter: blur(16px) saturate(1.8);
   border-bottom: 1px solid var(--card-border);
@@ -26,13 +26,13 @@
   /* Subtle shadow on scroll — controlled by .scrolled class */
   &.scrolled {
     padding: 14px 60px;
-    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
   }
 }
 
 .logo {
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
   text-decoration: none;
   z-index: 1100;
@@ -40,7 +40,7 @@
               color var(--transition-base);
 
   &:hover { opacity: 0.8; }
-  span { color: var(--accent); }
+  span { color: var(--accent); font-weight: 400; }
 }
 
 /* ============================= */
@@ -113,7 +113,7 @@
 
   &:hover {
     transform: rotate(20deg) scale(1.1) !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
   }
 
   &:active {
@@ -250,39 +250,16 @@
 }
 
 /* ============================= */
-/* DARK MODE OVERRIDES           */
+/* LIGHT MODE OVERRIDES          */
 /* ============================= */
 
-body.dark-mode .navbar {
-  background: rgba(15, 23, 42, 0.88);
+body.light-mode .navbar {
+  background: rgba(248, 250, 252, 0.88);
   border-color: var(--card-border);
 }
 
-body.dark-mode .navbar.scrolled {
-  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
-}
-
-body.dark-mode .logo              { color: #ffffff; }
-body.dark-mode .nav-links a       { color: #e2e8f0; }
-body.dark-mode .nav-links a:hover,
-body.dark-mode .nav-links a.active { color: var(--accent); }
-
-body.dark-mode .theme-toggle {
-  background: #1e293b;
-  border-color: #334155;
-  color: #ffffff;
-}
-
-body.dark-mode .hamburger .bar { background: #e2e8f0; }
-
-body.dark-mode .mobile-menu-panel {
-  background: #0f172a;
-  border-color: #334155;
-
-  a {
-    color: #e2e8f0;
-    border-color: #1e293b;
-  }
+body.light-mode .navbar.scrolled {
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* ============================= */

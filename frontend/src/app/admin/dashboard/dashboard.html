@@ -26,6 +26,12 @@
       <a class="nav-item" [class.active]="activeTab === 'add-photo'" (click)="setTab('add-photo')">
         <span class="nav-icon">📸</span> Upload Photo
       </a>
+      <a class="nav-item" [class.active]="activeTab === 'experiences'"  (click)="setTab('experiences')">
+        <span class="nav-icon">🎓</span> Timeline
+      </a>
+      <a class="nav-item" [class.active]="activeTab === 'add-experience'"  (click)="setTab('add-experience')">
+        <span class="nav-icon">⏳</span> Add Experience
+      </a>
       <a class="nav-item" [class.active]="activeTab === 'add-project'" (click)="setTab('add-project')">
         <span class="nav-icon">🚀</span> Add Project
       </a>
@@ -76,6 +82,13 @@
           <div class="stat-info">
             <span class="stat-value">{{ totalProjects }}</span>
             <span class="stat-label">Total Projects</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎓</div>
+          <div class="stat-info">
+            <span class="stat-value">{{ totalExperiences }}</span>
+            <span class="stat-label">Total Experiences</span>
           </div>
         </div>
       </div>
@@ -301,6 +314,81 @@
           <span *ngIf="addingProject" class="spinner"></span>
         </button>
         <div class="success-msg" *ngIf="projectSuccess">✅ Project added successfully!</div>
+      </div>
+    </section>
+
+    <!-- ── EXPERIENCES LIST ── -->
+    <section *ngIf="activeTab === 'experiences'" class="tab-content">
+      <div class="list-header">
+        <span>{{ totalExperiences }} experiences total</span>
+        <button class="add-btn" (click)="setTab('add-experience')">🎓 Add New</button>
+      </div>
+
+      <div class="poem-list">
+        <div class="poem-row" *ngFor="let exp of experiences">
+
+          <!-- View mode -->
+          <div *ngIf="editingExperienceId !== exp.id" class="poem-row-view">
+            <div class="poem-row-info">
+              <span class="poem-row-title">{{ exp.title }}</span>
+              <span class="poem-row-meta">
+                {{ exp.companyOrInstitution }} · {{ exp.dateRange }}
+                <ng-container *ngIf="exp.type"> ({{ exp.type }})</ng-container>
+              </span>
+            </div>
+            <div class="poem-row-actions">
+              <button class="icon-btn edit"   (click)="startEditExperience(exp)" title="Edit">✏️</button>
+              <button class="icon-btn delete" (click)="deleteExperience(exp.id)" title="Delete">🗑️</button>
+            </div>
+          </div>
+
+          <!-- Edit mode -->
+          <div *ngIf="editingExperienceId === exp.id" class="poem-row-edit">
+            <input [(ngModel)]="editExperience.title" placeholder="Title (e.g. MERN Developer)" class="edit-input" />
+            <input [(ngModel)]="editExperience.companyOrInstitution" placeholder="Company / Institution" class="edit-input" />
+            <input [(ngModel)]="editExperience.dateRange" placeholder="Date Range" class="edit-input" />
+            <input [(ngModel)]="editExperience.type" placeholder="Type (Education/Work/Internship)" class="edit-input" />
+            <textarea [(ngModel)]="editExperience.description" placeholder="Description" class="edit-textarea"></textarea>
+            <div class="edit-actions">
+              <button class="save-btn"   (click)="saveExperience(exp.id)">Save</button>
+              <button class="cancel-btn" (click)="cancelEditExperience()">Cancel</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ADD EXPERIENCE ── -->
+    <section *ngIf="activeTab === 'add-experience'" class="tab-content">
+      <div class="form-card">
+        <div class="field">
+          <label>Title</label>
+          <input type="text" [(ngModel)]="newExperience.title" placeholder="e.g. Bachelors of Computer Application" />
+        </div>
+        <div class="field">
+          <label>Company or Institution</label>
+          <input type="text" [(ngModel)]="newExperience.companyOrInstitution" placeholder="e.g. MSU Baroda, Vadodara" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Date Range</label>
+            <input type="text" [(ngModel)]="newExperience.dateRange" placeholder="e.g. 2022-2025" />
+          </div>
+          <div class="field">
+            <label>Type</label>
+            <input type="text" [(ngModel)]="newExperience.type" placeholder="Graduation, Internship, Work" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <textarea [(ngModel)]="newExperience.description" placeholder="Optional description..." rows="4"></textarea>
+        </div>
+        <button class="submit-btn" (click)="addExperience()" [disabled]="addingExperience">
+          <span *ngIf="!addingExperience">Add Experience</span>
+          <span *ngIf="addingExperience" class="spinner"></span>
+        </button>
+        <div class="success-msg" *ngIf="experienceSuccess">✅ Experience added successfully!</div>
       </div>
     </section>
 

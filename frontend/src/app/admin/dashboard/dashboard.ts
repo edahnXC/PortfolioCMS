@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { PoemService } from '../../services/poem';
 import { PhotoService } from '../../services/photo';
 import { ProjectService } from '../../services/project';
+import { ExperienceService } from '../../services/experience';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +24,7 @@ export class Dashboard implements OnInit {
   totalPoems = 0;
   totalPhotos = 0;
   totalProjects = 0;
+  totalExperiences = 0;
 
   /* ── Poems ── */
   poems: any[] = [];
@@ -62,11 +64,22 @@ export class Dashboard implements OnInit {
   addingProject = false;
   projectSuccess = false;
 
+  /* ── Experiences ── */
+  experiences: any[] = [];
+  editingExperienceId: number | null = null;
+  editExperience: any = {};
+
+  /* ── New Experience ── */
+  newExperience = { type: '', title: '', dateRange: '', companyOrInstitution: '', description: '' };
+  addingExperience = false;
+  experienceSuccess = false;
+
   constructor(
     private router: Router,
     private poemService: PoemService,
     private photoService: PhotoService,
     private projectService: ProjectService,
+    private experienceService: ExperienceService,
     private cdr: ChangeDetectorRef
   ) {}
 

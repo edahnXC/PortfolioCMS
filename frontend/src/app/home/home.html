@@ -1,28 +1,77 @@
 <section class="hero-intro">
-  <h1 class="reveal">
-    Capturing the <span>Essence</span> of Moments
-  </h1>
-  <p class="reveal">
-    Through the lens of creativity and structured expression.
-    Photography and poetry intersect here.
-  </p>
-</section>
-
-<section class="hero-gallery">
-  <div class="masonry">
-    <div class="masonry-image reveal-scale" *ngFor="let img of heroImages; let i = index">
-      <img [src]="img" loading="lazy" />
+  <div class="hero-content">
+    <h1 class="reveal">
+      Hi, I'm Om Kumar. <br/>
+      <span>Web Developer</span>
+    </h1>
+    <p class="reveal">
+      Building robust backend systems and beautiful frontend experiences. 
+      I specialize in Angular, ASP.NET Core, and modern web architectures.
+    </p>
+    <div class="hero-actions reveal">
+      <a href="https://github.com/edahnXC" target="_blank" class="btn-primary">View GitHub</a>
+      <a href="https://www.linkedin.com/in/omkrai19" target="_blank" class="btn-secondary">LinkedIn</a>
     </div>
   </div>
 </section>
 
-<section class="preview-section">
-  <h2 class="reveal">Latest Poems</h2>
-
-  <div class="poem-card reveal-scale" *ngFor="let poem of poems">
-    <h3>{{ poem.title }}</h3>
-    <p>{{ poem.content }}</p>
+<!-- TIMELINE -->
+<section class="preview-section timeline-section" *ngIf="experiences.length > 0">
+  <h2 class="reveal">Experience & Education</h2>
+  <div class="timeline">
+    <div class="timeline-item reveal-scale" *ngFor="let exp of experiences">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content card-glass">
+        <span class="timeline-date">{{ exp.dateRange }}</span>
+        <h3>{{ exp.title }}</h3>
+        <span class="timeline-company">{{ exp.companyOrInstitution }}</span>
+        <p *ngIf="exp.description">{{ exp.description }}</p>
+      </div>
+    </div>
   </div>
+</section>
 
-  <button routerLink="/poems" class="reveal">View More Poems</button>
+<!-- PROJECTS -->
+<section class="preview-section projects-section" *ngIf="projects.length > 0">
+  <h2 class="reveal">Featured Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card card-glass reveal-scale" *ngFor="let proj of projects">
+      <div class="project-icon">{{ proj.icon }}</div>
+      <h3>{{ proj.name }}</h3>
+      <p>{{ proj.description }}</p>
+      <div class="project-tags">
+        <span class="tag" *ngFor="let tag of proj.techTags.split(',')">{{ tag.trim() }}</span>
+      </div>
+      <a *ngIf="proj.link" [href]="proj.link" target="_blank" class="project-link">View Project →</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOBBIES -->
+<section class="preview-section hobbies-section">
+  <h2 class="reveal">Beyond the Code</h2>
+  <p class="hobbies-subtitle reveal">When I'm not coding, I enjoy capturing moments and writing poetry.</p>
+  
+  <div class="hobbies-grid">
+    <!-- Gallery Snippet -->
+    <div class="hobby-card card-glass reveal-scale">
+      <h3>🖼️ Photography</h3>
+      <div class="hobby-images">
+        <img *ngFor="let img of photos.slice(0,3)" [src]="img.imagePath" loading="lazy" />
+      </div>
+      <button routerLink="/gallery" class="hobby-btn">Explore Gallery</button>
+    </div>
+
+    <!-- Poetry Snippet -->
+    <div class="hobby-card card-glass reveal-scale">
+      <h3>📝 Poetry</h3>
+      <div class="hobby-poems">
+        <div class="mini-poem" *ngFor="let poem of poems.slice(0,2)">
+          <h4>{{ poem.title }}</h4>
+          <p>{{ (poem.content | slice:0:60) + '...' }}</p>
+        </div>
+      </div>
+      <button routerLink="/poems" class="hobby-btn">Read Poems</button>
+    </div>
+  </div>
 </section>
