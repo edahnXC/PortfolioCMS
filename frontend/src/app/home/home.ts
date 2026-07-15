@@ -34,28 +34,56 @@ export class Home implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.poemService.getPoems(1, 2).subscribe((res: any) => {
-      this.poems = res.data ?? [];
-      this.poemsLoaded = true;
-      this.tryReveal();
+    this.poemService.getPoems(1, 2).subscribe({
+      next: (res: any) => {
+        this.poems = res.data ?? [];
+        this.poemsLoaded = true;
+        this.tryReveal();
+      },
+      error: (err) => {
+        console.error("Failed to load poems:", err);
+        this.poemsLoaded = true;
+        this.tryReveal();
+      }
     });
 
-    this.photoService.getPhotos(1, 6).subscribe((res: any) => {
-      this.photos = res.data ?? [];
-      this.photosLoaded = true;
-      this.tryReveal();
+    this.photoService.getPhotos(1, 6).subscribe({
+      next: (res: any) => {
+        this.photos = res.data ?? [];
+        this.photosLoaded = true;
+        this.tryReveal();
+      },
+      error: (err) => {
+        console.error("Failed to load photos:", err);
+        this.photosLoaded = true;
+        this.tryReveal();
+      }
     });
 
-    this.projectService.getProjects().subscribe((res: any) => {
-      this.projects = res.data ?? [];
-      this.projectsLoaded = true;
-      this.tryReveal();
+    this.projectService.getProjects().subscribe({
+      next: (res: any) => {
+        this.projects = res.data ?? [];
+        this.projectsLoaded = true;
+        this.tryReveal();
+      },
+      error: (err) => {
+        console.error("Failed to load projects:", err);
+        this.projectsLoaded = true;
+        this.tryReveal();
+      }
     });
 
-    this.experienceService.getExperiences().subscribe((res: any) => {
-      this.experiences = res.data ?? [];
-      this.experiencesLoaded = true;
-      this.tryReveal();
+    this.experienceService.getExperiences().subscribe({
+      next: (res: any) => {
+        this.experiences = res.data ?? [];
+        this.experiencesLoaded = true;
+        this.tryReveal();
+      },
+      error: (err) => {
+        console.error("Failed to load experiences:", err);
+        this.experiencesLoaded = true;
+        this.tryReveal();
+      }
     });
   }
 
