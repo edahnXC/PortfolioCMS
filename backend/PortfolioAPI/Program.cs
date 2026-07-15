@@ -43,6 +43,8 @@ var rawConn = builder.Configuration.GetConnectionString("DefaultConnection")
               ?? Environment.GetEnvironmentVariable("DATABASE_URL")
               ?? "";
 
+bool isPostgres = rawConn.StartsWith("postgres://") || rawConn.StartsWith("postgresql://") || rawConn.Contains("Host=") || rawConn.Contains("Port=");
+
 if (rawConn.StartsWith("postgres://") || rawConn.StartsWith("postgresql://"))
 {
   var uri = new Uri(rawConn);
@@ -54,7 +56,16 @@ if (rawConn.StartsWith("postgres://") || rawConn.StartsWith("postgresql://"))
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(rawConn));
+{
+  if (isPostgres)
+  {
+    options.UseNpgsql(rawConn);
+  }
+  else
+  {
+    options.UseSqlServer(rawConn);
+  }
+});
 
 // ── Cloudinary ──
 var cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME") ?? "";
@@ -122,7 +133,14 @@ app.UseStaticFiles(new StaticFileOptions
 using (var scope = app.Services.CreateScope())
 {
   var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-  db.Database.Migrate();
+  if (db.Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL")
+  {
+    db.Database.Migrate();
+  }
+  else
+  {
+    db.Database.EnsureCreated();
+  }
 }
 
 // Seed admin
