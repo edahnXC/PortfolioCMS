@@ -142,8 +142,8 @@ export class App implements OnInit, OnDestroy {
 
   private onDataLoaded() {
     this.completeLoadingProgress();
-    if (this.revealDone) return;
     this.revealDone = true;
+    this.cdr.detectChanges();
     setTimeout(() => this.initScrollReveal(), 50);
   }
 
@@ -180,7 +180,12 @@ export class App implements OnInit, OnDestroy {
   }
 
   initScrollReveal() {
+    ScrollTrigger.getAll().forEach(t => t.kill());
+
     const animateEl = (el: HTMLElement, fromVars: any, toVars: any, delay = 0) => {
+      if (el.classList.contains('gsap-initialized')) return;
+      el.classList.add('gsap-initialized');
+
       const rect = el.getBoundingClientRect();
       const inViewport = rect.top < window.innerHeight;
 
@@ -199,42 +204,39 @@ export class App implements OnInit, OnDestroy {
           ease: toVars.ease ?? 'power3.out',
           scrollTrigger: {
             trigger: el,
-            start: 'top 90%',
+            start: 'top 92%',
             toggleActions: 'play none none none'
           }
         });
       }
     };
 
-    gsap.utils.toArray<HTMLElement>('.reveal').forEach((el, i) => {
-      animateEl(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, i * 0.06);
+    gsap.utils.toArray<HTMLElement>('.reveal:not(.gsap-initialized)').forEach((el, i) => {
+      animateEl(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, i * 0.05);
     });
 
-    gsap.utils.toArray<HTMLElement>('.reveal-left').forEach(el => {
+    gsap.utils.toArray<HTMLElement>('.reveal-left:not(.gsap-initialized)').forEach(el => {
       animateEl(el, { opacity: 0, x: -40 }, { opacity: 1, x: 0 });
     });
 
-    gsap.utils.toArray<HTMLElement>('.reveal-right').forEach(el => {
+    gsap.utils.toArray<HTMLElement>('.reveal-right:not(.gsap-initialized)').forEach(el => {
       animateEl(el, { opacity: 0, x: 40 }, { opacity: 1, x: 0 });
     });
 
-    // reveal-scale — stagger for cards, smooth duration for gallery images
-    gsap.utils.toArray<HTMLElement>('.reveal-scale').forEach((el, i) => {
-      const isGallery = el.closest('.masonry') !== null;
+    gsap.utils.toArray<HTMLElement>('.reveal-scale:not(.gsap-initialized)').forEach((el, i) => {
       animateEl(
         el,
         { opacity: 0, scale: 0.92 },
         {
           opacity: 1,
           scale: 1,
-          duration: isGallery ? 1 : 0.6,
-          ease: isGallery ? 'power3.out' : 'back.out(1.2)'
+          duration: 0.6,
+          ease: 'power3.out'
         },
-        isGallery ? i * 0.12 : i * 0.07
+        i * 0.06
       );
     });
 
-    // Refresh ScrollTrigger to recalculate cached position values after dynamic content finishes rendering
     setTimeout(() => {
       ScrollTrigger.refresh();
     }, 200);
