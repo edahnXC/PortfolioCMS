@@ -35,8 +35,8 @@
   justify-content: space-between;
   padding: 18px 60px;
   background: var(--navbar-bg);
-  backdrop-filter: blur(16px) saturate(1.8);
   -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  backdrop-filter: blur(16px) saturate(1.8);
   border-bottom: 1px solid var(--card-border);
   z-index: 1000;
   pointer-events: auto;
@@ -199,8 +199,8 @@
   inset: 0;
   z-index: 999;
   background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;

@@ -108,9 +108,10 @@ export class Dashboard implements OnInit {
   setTab(tab: string) {
     this.activeTab = tab;
     this.sidebarOpen = false;
-    if (tab === 'poems')    this.loadPoems(1);
-    if (tab === 'photos')   this.loadPhotos(1);
-    if (tab === 'projects') this.loadProjects();
+    if (tab === 'poems')       this.loadPoems(1);
+    if (tab === 'photos')      this.loadPhotos(1);
+    if (tab === 'projects')    this.loadProjects();
+    if (tab === 'experiences') this.loadExperiences();
   }
 
   logout() {
@@ -136,6 +137,10 @@ export class Dashboard implements OnInit {
     });
     this.projectService.getProjects().subscribe((r: any) => {
       this.totalProjects = r.totalCount;
+      this.cdr.detectChanges();
+    });
+    this.experienceService.getExperiences().subscribe((r: any) => {
+      this.totalExperiences = r.totalCount;
       this.cdr.detectChanges();
     });
   }
