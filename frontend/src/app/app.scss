@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 18px 60px;
-  background: rgba(2, 6, 23, 0.75);
+  background: var(--navbar-bg);
   backdrop-filter: blur(16px) saturate(1.8);
   -webkit-backdrop-filter: blur(16px) saturate(1.8);
   border-bottom: 1px solid var(--card-border);
@@ -254,7 +254,6 @@
 /* ============================= */
 
 body.light-mode .navbar {
-  background: rgba(248, 250, 252, 0.88);
   border-color: var(--card-border);
 }
 

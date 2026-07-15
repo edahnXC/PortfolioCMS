@@ -13,6 +13,7 @@
   --text-secondary:#94a3b8;
   --card-bg:       rgba(30, 41, 59, 0.5);
   --card-border:   rgba(51, 65, 85, 0.5);
+  --navbar-bg:     rgba(2, 6, 23, 0.75);
   --hero-gradient: linear-gradient(135deg, #020617 0%, #0f172a 50%, #020617 100%);
   --shadow-sm:     0 1px 3px rgba(0,0,0,0.3);
   --shadow-md:     0 4px 12px rgba(0,0,0,0.4);
@@ -33,6 +34,7 @@ body.light-mode {
   --text-secondary:#64748b;
   --card-bg:       rgba(255, 255, 255, 0.8);
   --card-border:   rgba(226, 232, 240, 0.8);
+  --navbar-bg:     rgba(248, 250, 252, 0.88);
   --shadow-sm:     0 1px 3px rgba(0,0,0,0.06);
   --shadow-md:     0 4px 12px rgba(0,0,0,0.08);
   --shadow-lg:     0 12px 40px rgba(0,0,0,0.12);
