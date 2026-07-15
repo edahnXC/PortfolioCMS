@@ -215,5 +215,10 @@ export class App implements OnInit, OnDestroy {
         isGallery ? i * 0.12 : i * 0.07
       );
     });
+
+    // Refresh ScrollTrigger to recalculate cached position values after dynamic content finishes rendering
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
   }
 }
