@@ -25,6 +25,7 @@ export class App implements OnInit, OnDestroy {
   isRouteLoading = false;
   loadingProgress = 0;
   private progressInterval: any;
+  private safetyTimeout: any;
 
   private revealDone = false;
   private dataLoadedHandler = () => this.onDataLoaded();
@@ -57,10 +58,32 @@ export class App implements OnInit, OnDestroy {
           ScrollTrigger.getAll().forEach(t => t.kill());
         }
 
-        // Keep loading bar running ONLY for pages that dynamically load API data
+        // Clear any active safety timeouts from the previous page
+        if (this.safetyTimeout) {
+          clearTimeout(this.safetyTimeout);
+        }
+
+        // API-heavy pages that dispatch 'data-loaded': Home ('/'), Poems ('/poems'), Gallery ('/gallery')
         const isApiPage = event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/poems' || event.urlAfterRedirects.startsWith('/gallery');
+        
         if (!isApiPage) {
           this.completeLoadingProgress();
+          // Static pages don't fire data-loaded, so reveal them immediately
+          this.safetyTimeout = setTimeout(() => {
+            if (!this.revealDone) {
+              this.revealDone = true;
+              this.initScrollReveal();
+            }
+          }, 150);
+        } else {
+          // Dynamic pages: Wait for data-loaded.
+          // Safety net: in case backend is down or fails, reveal anyway after 4 seconds
+          this.safetyTimeout = setTimeout(() => {
+            if (!this.revealDone) {
+              console.warn("Safety net triggered: data-loaded event timed out. Revealing content.");
+              this.onDataLoaded();
+            }
+          }, 4000);
         }
       } else if (event instanceof NavigationCancel || event instanceof NavigationError) {
         this.completeLoadingProgress();
@@ -75,14 +98,6 @@ export class App implements OnInit, OnDestroy {
     // Pages with API data fire this after DOM is ready
     window.addEventListener('data-loaded', this.dataLoadedHandler);
 
-    // Static pages like About fire this immediately
-    setTimeout(() => {
-      if (!this.revealDone) {
-        this.revealDone = true;
-        this.initScrollReveal();
-      }
-    }, 300);
-
     // Set initial scroll state
     this.checkScroll();
   }
@@ -91,6 +106,9 @@ export class App implements OnInit, OnDestroy {
     window.removeEventListener('data-loaded', this.dataLoadedHandler);
     if (this.progressInterval) {
       clearInterval(this.progressInterval);
+    }
+    if (this.safetyTimeout) {
+      clearTimeout(this.safetyTimeout);
     }
   }
 
