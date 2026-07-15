@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PhotoService } from '../services/photo';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-gallery',
@@ -40,7 +41,10 @@ export class Gallery implements OnInit{
     this.photoService.getPhotos(this.currentPage,this.pageSize)
     .subscribe((response:any)=>{
 
-      this.photos=response.data
+      this.photos=response.data.map((p: any) => ({
+        ...p,
+        imagePath: p.imagePath.startsWith('http') ? p.imagePath : `${environment.apiUrl}/${p.imagePath}`
+      }))
       this.totalCount=response.totalCount
 
       this.totalPages=Math.ceil(this.totalCount/this.pageSize)
