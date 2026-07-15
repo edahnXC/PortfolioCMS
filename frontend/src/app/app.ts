@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import gsap from 'gsap';
@@ -22,6 +22,10 @@ export class App implements OnInit, OnDestroy {
   isScrolled = false;
   currentYear = new Date().getFullYear();
 
+  isRouteLoading = false;
+  loadingProgress = 0;
+  private progressInterval: any;
+
   private revealDone = false;
   private dataLoadedHandler = () => this.onDataLoaded();
 
@@ -37,19 +41,29 @@ export class App implements OnInit, OnDestroy {
       document.body.classList.remove('light-mode');
     }
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
-      this.revealDone = false;
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.startLoadingProgress();
+      } else if (event instanceof NavigationEnd) {
+        this.isAdminRoute = event.urlAfterRedirects.startsWith('/admin');
+        this.revealDone = false;
 
-      window.scrollTo({ top: 0, behavior: 'instant' });
+        window.scrollTo({ top: 0, behavior: 'instant' });
 
-      if (this.isAdminRoute) {
-        document.body.classList.add('admin-route');
-      } else {
-        document.body.classList.remove('admin-route');
-        ScrollTrigger.getAll().forEach(t => t.kill());
+        if (this.isAdminRoute) {
+          document.body.classList.add('admin-route');
+        } else {
+          document.body.classList.remove('admin-route');
+          ScrollTrigger.getAll().forEach(t => t.kill());
+        }
+
+        // Keep loading bar running ONLY for pages that dynamically load API data
+        const isApiPage = event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/poems' || event.urlAfterRedirects.startsWith('/gallery');
+        if (!isApiPage) {
+          this.completeLoadingProgress();
+        }
+      } else if (event instanceof NavigationCancel || event instanceof NavigationError) {
+        this.completeLoadingProgress();
       }
     });
 
@@ -75,9 +89,41 @@ export class App implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     window.removeEventListener('data-loaded', this.dataLoadedHandler);
+    if (this.progressInterval) {
+      clearInterval(this.progressInterval);
+    }
+  }
+
+  private startLoadingProgress() {
+    this.isRouteLoading = true;
+    this.loadingProgress = 15;
+    
+    if (this.progressInterval) {
+      clearInterval(this.progressInterval);
+    }
+
+    this.progressInterval = setInterval(() => {
+      if (this.loadingProgress < 85) {
+        this.loadingProgress += (90 - this.loadingProgress) * 0.08; // asymptotic crawl
+      }
+    }, 180);
+  }
+
+  private completeLoadingProgress() {
+    if (this.progressInterval) {
+      clearInterval(this.progressInterval);
+    }
+    this.loadingProgress = 100;
+    setTimeout(() => {
+      this.isRouteLoading = false;
+      setTimeout(() => {
+        this.loadingProgress = 0;
+      }, 300);
+    }, 250);
   }
 
   private onDataLoaded() {
+    this.completeLoadingProgress();
     if (this.revealDone) return;
     this.revealDone = true;
     setTimeout(() => this.initScrollReveal(), 50);
