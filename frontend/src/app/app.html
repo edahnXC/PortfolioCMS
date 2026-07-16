@@ -12,6 +12,7 @@
         <a routerLink="/"        routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
         <a routerLink="/poems"   routerLinkActive="active">Poems</a>
         <a routerLink="/gallery" routerLinkActive="active">Gallery</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
       </div>
 
       <button class="theme-toggle" (click)="toggleTheme()">
@@ -33,6 +34,7 @@
       <a routerLink="/"        routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">Home</a>
       <a routerLink="/poems"   routerLinkActive="active" (click)="closeMenu()">Poems</a>
       <a routerLink="/gallery" routerLinkActive="active" (click)="closeMenu()">Gallery</a>
+      <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a>
 
       <button class="theme-toggle mobile-theme-toggle" (click)="toggleTheme()">
         <span *ngIf="!darkMode">🌙 Light</span>
@@ -58,6 +60,7 @@
       <a routerLink="/">Home</a>
       <a routerLink="/poems">Poems</a>
       <a routerLink="/gallery">Gallery</a>
+      <a routerLink="/contact">Contact</a>
     </nav>
 
     <div class="footer-socials">

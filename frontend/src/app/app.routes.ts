@@ -8,6 +8,7 @@ import { authGuard } from './auth-guard';
 import { Home } from './home/home';
 import { Poems } from './poems/poems';
 import { GalleryPublic } from './gallery-public/gallery-public';
+import { Contact } from './contact/contact';
 
 export const routes: Routes = [
 
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: '', component: Home },
   { path: 'poems', component: Poems },
   { path: 'gallery', component: GalleryPublic },
+  { path: 'contact', component: Contact },
 
   // ADMIN ROUTES
   { path: 'manage/portal-login', component: Login },
