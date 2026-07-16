@@ -17,7 +17,7 @@ export class Contact implements OnInit, OnDestroy {
   submitError = false;
 
   // Replace this with your actual Formspree endpoint URL
-  private formspreeUrl = 'https://formspree.io/f/YOUR_FORM_ID';
+  private formspreeUrl = 'https://formspree.io/f/meeyevko';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.contactForm = this.fb.group({
@@ -55,7 +55,7 @@ export class Contact implements OnInit, OnDestroy {
         this.isSubmitting = false;
         this.submitSuccess = true;
         this.contactForm.reset();
-        
+
         // Hide success message after 5 seconds
         setTimeout(() => this.submitSuccess = false, 5000);
       },
